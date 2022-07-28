@@ -11,7 +11,7 @@ public class Gender {
     private long id;
 
     @Column(name = "gender", nullable = false)
-    private String gender;
+    private String value;
 
     public Gender() {
     }
@@ -24,11 +24,11 @@ public class Gender {
         this.id = id;
     }
 
-    public String getGender() {
-        return gender;
+    public String getValue() {
+        return value;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
+    public void setValue(String value) {
+        this.value = value;
     }
 }

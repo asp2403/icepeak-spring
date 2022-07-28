@@ -1,17 +1,9 @@
-package aspopov.icepeak.warehouse.domain;
+package aspopov.batchsampledata.domain;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "vendor")
 public class Vendor {
 
-    @Id
-    @GeneratedValue
-    @Column(name = "id_vendor")
     private long id;
 
-    @Column(name = "vendor", nullable = false)
     private String value;
 
     public Vendor() {

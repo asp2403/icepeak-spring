@@ -12,7 +12,7 @@ public class ProductType {
     private long id;
 
     @Column(name = "product_type", nullable = false)
-    private String productType;
+    private String value;
 
     public ProductType() {
     }
@@ -25,11 +25,11 @@ public class ProductType {
         this.id = id;
     }
 
-    public String getProductType() {
-        return productType;
+    public String getValue() {
+        return value;
     }
 
-    public void setProductType(String productType) {
-        this.productType = productType;
+    public void setValue(String value) {
+        this.value = value;
     }
 }

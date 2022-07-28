@@ -1,0 +1,8 @@
+app:
+  vendors-file: vendors.csv
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/icepeak_test
+    username: postgres
+    password: postgres

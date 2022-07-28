@@ -11,7 +11,7 @@ public class Age {
     private long id;
 
     @Column(name = "age", nullable = false)
-    private String age;
+    private String value;
 
     public Age() {
     }
@@ -24,11 +24,11 @@ public class Age {
         this.id = id;
     }
 
-    public String getAge() {
-        return age;
+    public String getValue() {
+        return value;
     }
 
-    public void setAge(String age) {
-        this.age = age;
+    public void setValue(String value) {
+        this.value = value;
     }
 }
