@@ -34,6 +34,10 @@ public class Model {
     @Column(name = "image_large")
     private byte[] imageLarge;
 
+    @ManyToOne
+    @JoinColumn(name = "id_product_type", nullable = false)
+    private ProductType productType;
+
     public Model() {
     }
 
@@ -99,5 +103,13 @@ public class Model {
 
     public void setImageLarge(byte[] imageLarge) {
         this.imageLarge = imageLarge;
+    }
+
+    public ProductType getProductType() {
+        return productType;
+    }
+
+    public void setProductType(ProductType productType) {
+        this.productType = productType;
     }
 }

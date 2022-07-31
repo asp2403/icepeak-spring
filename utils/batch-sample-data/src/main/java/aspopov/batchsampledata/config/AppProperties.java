@@ -6,7 +6,16 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "app")
 public class AppProperties {
+    private String skiModelsFile;
     private String vendorsFile;
+
+    public String getSkiModelsFile() {
+        return skiModelsFile;
+    }
+
+    public void setSkiModelsFile(String skiModelsFile) {
+        this.skiModelsFile = skiModelsFile;
+    }
 
     public String getVendorsFile() {
         return vendorsFile;

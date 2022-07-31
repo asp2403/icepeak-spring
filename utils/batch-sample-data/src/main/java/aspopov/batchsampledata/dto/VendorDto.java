@@ -1,12 +1,16 @@
-package aspopov.batchsampledata.domain;
+package aspopov.batchsampledata.dto;
 
-public class Vendor {
+import javax.persistence.*;
+
+public class VendorDto {
 
     private long id;
 
     private String value;
 
-    public Vendor() {
+    public VendorDto(long id, String value) {
+        this.id = id;
+        this.value = value;
     }
 
     public long getId() {

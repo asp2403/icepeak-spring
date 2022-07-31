@@ -17,6 +17,10 @@ public class Vendor {
     public Vendor() {
     }
 
+    public Vendor(String value) {
+        this.value = value;
+    }
+
     public long getId() {
         return id;
     }

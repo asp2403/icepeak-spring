@@ -12,10 +12,6 @@ public class Product {
     @Column(name = "id_product")
     private long id;
 
-    @ManyToOne
-    @JoinColumn(name = "id_product_type", nullable = false)
-    private ProductType productType;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_model", nullable = false)
     private Model model;
@@ -35,14 +31,6 @@ public class Product {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public ProductType getProductType() {
-        return productType;
-    }
-
-    public void setProductType(ProductType productType) {
-        this.productType = productType;
     }
 
     public Model getModel() {
