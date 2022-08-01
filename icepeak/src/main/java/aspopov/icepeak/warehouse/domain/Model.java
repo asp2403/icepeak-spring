@@ -10,6 +10,9 @@ public class Model {
     @Column(name = "id_model")
     private long id;
 
+    @Column(name = "model", nullable = false)
+    private String name;
+
     @ManyToOne
     @JoinColumn(name = "id_vendor", nullable = false)
     private Vendor vendor;
@@ -47,6 +50,14 @@ public class Model {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Vendor getVendor() {

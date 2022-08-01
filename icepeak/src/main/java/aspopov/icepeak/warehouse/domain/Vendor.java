@@ -12,13 +12,13 @@ public class Vendor {
     private long id;
 
     @Column(name = "vendor", nullable = false)
-    private String value;
+    private String name;
 
     public Vendor() {
     }
 
     public Vendor(String value) {
-        this.value = value;
+        this.name = value;
     }
 
     public long getId() {
@@ -29,11 +29,11 @@ public class Vendor {
         this.id = id;
     }
 
-    public String getValue() {
-        return value;
+    public String getName() {
+        return name;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setName(String name) {
+        this.name = name;
     }
 }
