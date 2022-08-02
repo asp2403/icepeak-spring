@@ -1,5 +1,7 @@
 package aspopov.icepeak.warehouse.domain;
 
+import org.hibernate.annotations.Fetch;
+
 import javax.persistence.*;
 
 @Entity
@@ -13,18 +15,18 @@ public class Model {
     @Column(name = "model", nullable = false)
     private String name;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_vendor", nullable = false)
     private Vendor vendor;
 
     @Column(name = "description", nullable = false)
     private String description;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_gender", nullable = false)
     private Gender gender;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_age", nullable = false)
     private Age age;
 
@@ -37,7 +39,7 @@ public class Model {
     @Column(name = "image_large")
     private byte[] imageLarge;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_product_type", nullable = false)
     private ProductType productType;
 
