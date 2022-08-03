@@ -3,6 +3,7 @@ package aspopov.batchsampledata.config;
 
 import aspopov.batchsampledata.dto.ModelDto;
 import aspopov.batchsampledata.dto.ImageDto;
+import aspopov.batchsampledata.dto.SkiDto;
 import aspopov.batchsampledata.dto.VendorDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,6 +67,8 @@ public class JobConfig {
                 .next(loadModels())
                 .next(loadModelLargeImages())
                 .next(loadModelSmallImages())
+                .next(loadSkiProducts())
+                .next(loadSki())
                 .build();
     }
 
@@ -349,6 +352,131 @@ public class JobConfig {
                               @Override
                               public void beforeStep(StepExecution stepExecution) {
                                   logger.info("Импортируем маленькие изображения моделей...");
+                              }
+
+                              @Override
+                              public ExitStatus afterStep(StepExecution stepExecution) {
+                                  return null;
+                              }
+
+                          }
+
+                )
+                .allowStartIfComplete(true)
+                .build();
+    }
+
+    @StepScope
+    @Bean
+    public FlatFileItemReader<SkiDto> skiProductReader() {
+        return new FlatFileItemReaderBuilder<SkiDto>()
+                .name("skiProductReader")
+                .resource(new FileSystemResource(appProperties.getSkiFile()))
+                .lineMapper((s, i) -> {
+                    var fieldsValues = s.split(",");
+                    var skiDto = new SkiDto(
+                            Long.valueOf(fieldsValues[0]),
+                            Long.valueOf(fieldsValues[1]),
+                            Integer.valueOf(fieldsValues[2]),
+                            Integer.valueOf(fieldsValues[3])
+                            );
+                    return skiDto;
+                })
+                .build();
+    }
+
+    @Bean
+    public ItemWriter<SkiDto> skiProductWriter() {
+        return new JdbcBatchItemWriterBuilder<SkiDto>()
+                .dataSource(dataSource)
+                .sql("insert into product(id_product, id_model, qty_available) values (:id, :idModel, :qtyAvailable)")
+                .beanMapped()
+                .build();
+    }
+
+    @Bean
+    public Step loadSkiProducts() {
+        return stepBuilderFactory.get("loadSkiProductStep")
+                .<SkiDto, SkiDto>chunk(CHUNK_SIZE)
+                .reader(skiProductReader())
+                .writer(skiProductWriter())
+                .listener(new ItemReadListener<SkiDto>() {
+
+
+                              @Override
+                              public void beforeRead() {
+
+                              }
+
+                              @Override
+                              public void afterRead(SkiDto skiDto) {
+                                  logger.info(String.valueOf(skiDto.getId()));
+                              }
+
+                              @Override
+                              public void onReadError(@NonNull Exception e) {
+                                  logger.info("Ошибка чтения");
+                              }
+                          }
+
+                )
+                .listener(new StepExecutionListener() {
+                              @Override
+                              public void beforeStep(StepExecution stepExecution) {
+                                  logger.info("Импортируем продукты (лыжи)...");
+                              }
+
+                              @Override
+                              public ExitStatus afterStep(StepExecution stepExecution) {
+                                  return null;
+                              }
+
+                          }
+
+                )
+                .allowStartIfComplete(true)
+                .build();
+    }
+
+    @Bean
+    public ItemWriter<SkiDto> skiWriter() {
+        return new JdbcBatchItemWriterBuilder<SkiDto>()
+                .dataSource(dataSource)
+                .sql("insert into ski(id_product, height) values (:id, :height)")
+                .beanMapped()
+                .build();
+    }
+
+    @Bean
+    public Step loadSki() {
+        return stepBuilderFactory.get("loadSkiStep")
+                .<SkiDto, SkiDto>chunk(CHUNK_SIZE)
+                .reader(skiProductReader())
+                .writer(skiWriter())
+                .listener(new ItemReadListener<SkiDto>() {
+
+
+                              @Override
+                              public void beforeRead() {
+
+                              }
+
+                              @Override
+                              public void afterRead(SkiDto skiDto) {
+                                  logger.info(String.valueOf(skiDto.getId()));
+                              }
+
+                              @Override
+                              public void onReadError(@NonNull Exception e) {
+                                  logger.info("Ошибка чтения");
+                              }
+                          }
+
+                )
+                .listener(new StepExecutionListener() {
+                              @Override
+                              public void beforeStep(StepExecution stepExecution) {
+                                  logger.info("Импортируем лыжи...");
                               }
 
                               @Override

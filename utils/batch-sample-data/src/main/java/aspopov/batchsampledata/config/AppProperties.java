@@ -10,6 +10,7 @@ public class AppProperties {
     private String vendorsFile;
     private String skiImagesLarge;
     private String skiImagesSmall;
+    private String skiFile;
 
     public String getSkiModelsFile() {
         return skiModelsFile;
@@ -41,5 +42,13 @@ public class AppProperties {
 
     public void setSkiImagesSmall(String skiImagesSmall) {
         this.skiImagesSmall = skiImagesSmall;
+    }
+
+    public String getSkiFile() {
+        return skiFile;
+    }
+
+    public void setSkiFile(String skiFile) {
+        this.skiFile = skiFile;
     }
 }

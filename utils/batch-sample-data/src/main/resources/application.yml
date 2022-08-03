@@ -3,6 +3,7 @@ app:
   ski-models-file: ski-models.csv
   ski-images-large: ski-images-large
   ski-images-small: ski-images-small
+  ski-file: ski.csv
 
 spring:
   datasource:
