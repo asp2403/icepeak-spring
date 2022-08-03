@@ -1,16 +1,16 @@
 package aspopov.icepeak.warehouse.service;
 
 import aspopov.icepeak.warehouse.domain.Model;
-import aspopov.icepeak.warehouse.dto.SearchParams;
+import aspopov.icepeak.warehouse.dto.ModelSearchParams;
 import aspopov.icepeak.warehouse.repository.ModelRepository;
 
+import aspopov.icepeak.warehouse.repository.ModelSpecification;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static aspopov.icepeak.warehouse.repository.ModelSpecification.nameLike;
 
 @Service
 public class ModelServiceImpl implements ModelService {
@@ -23,8 +23,8 @@ public class ModelServiceImpl implements ModelService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Model> search(SearchParams searchParams) {
-        var spec = Specification.where(nameLike(searchParams.getModelName()));
+    public List<Model> search(ModelSearchParams searchParams) {
+        var spec = ModelSpecification.build(searchParams);
         return modelRepository.findAll(spec);
     }
 }

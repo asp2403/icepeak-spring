@@ -1,9 +1,6 @@
 package aspopov.icepeak.warehouse.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "ski")
@@ -23,4 +20,6 @@ public class Ski extends Product{
     public void setHeight(int height) {
         this.height = height;
     }
+
+
 }

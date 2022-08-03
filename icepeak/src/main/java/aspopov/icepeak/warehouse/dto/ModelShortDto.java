@@ -1,6 +1,10 @@
 package aspopov.icepeak.warehouse.dto;
 
 import aspopov.icepeak.warehouse.domain.Model;
+import aspopov.icepeak.warehouse.domain.Product;
+
+import java.util.Arrays;
+import java.util.Objects;
 
 public class ModelShortDto {
     private final long id;
@@ -19,6 +23,26 @@ public class ModelShortDto {
 
     public static ModelShortDto fromDomain(Model model) {
         return new ModelShortDto(model.getId(), model.getName(), model.getVendor().getName(), model.getPrice(), model.getImageSmall());
+    }
+
+    public static ModelShortDto fromProduct(Product product) {
+        var model = product.getModel();
+        return fromDomain(model);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ModelShortDto that = (ModelShortDto) o;
+        return id == that.id && price == that.price && Objects.equals(model, that.model) && Objects.equals(vendor, that.vendor) && Arrays.equals(image, that.image);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(id, model, vendor, price);
+        result = 31 * result + Arrays.hashCode(image);
+        return result;
     }
 
     public long getId() {

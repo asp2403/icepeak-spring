@@ -3,6 +3,8 @@ package aspopov.icepeak.warehouse.domain;
 import org.hibernate.annotations.Fetch;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "model")
@@ -43,7 +45,26 @@ public class Model {
     @JoinColumn(name = "id_product_type", nullable = false)
     private ProductType productType;
 
+    @OneToMany(mappedBy = "model")
+    private List<Product> products;
+
+
+
     public Model() {
+
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Model model = (Model) o;
+        return id == model.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     public long getId() {
