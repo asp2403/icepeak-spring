@@ -1,13 +1,11 @@
 package aspopov.icepeak.warehouse.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "boots")
 @PrimaryKeyJoinColumn(name = "id_product")
+@DiscriminatorValue("2")
 public class Boots extends Product{
 
     @Column(name = "size", nullable = false)

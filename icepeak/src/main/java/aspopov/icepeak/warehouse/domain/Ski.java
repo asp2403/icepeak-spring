@@ -5,6 +5,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "ski")
 @PrimaryKeyJoinColumn(name = "id_product")
+@DiscriminatorValue("1")
 public class Ski extends Product{
 
     @Column(name = "height", nullable = false)

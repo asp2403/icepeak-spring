@@ -9,9 +9,9 @@ public class ModelDto {
     private int idGender;
     private int idAge;
     private String description;
-    private int idProductType;
 
-    public ModelDto(long id, String modelName, long idVendor, int price, int idGender, int idAge, String description, int idProductType) {
+
+    public ModelDto(long id, String modelName, long idVendor, int price, int idGender, int idAge, String description) {
         this.id = id;
         this.modelName = modelName;
         this.idVendor = idVendor;
@@ -19,16 +19,8 @@ public class ModelDto {
         this.idGender = idGender;
         this.idAge = idAge;
         this.description = description;
-        this.idProductType = idProductType;
-    }
-    public int getIdProductType() {
-        return idProductType;
-    }
 
-    public void setIdProductType(int idProductType) {
-        this.idProductType = idProductType;
     }
-
     public long getId() {
         return id;
     }

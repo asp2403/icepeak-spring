@@ -5,12 +5,17 @@ import javax.persistence.*;
 @Entity
 @Table(name = "product")
 @Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "id_product_type", discriminatorType = DiscriminatorType.INTEGER)
 public class Product {
 
     @Id
     @GeneratedValue
     @Column(name = "id_product")
     private long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_product_type", nullable = false)
+    private ProductType productType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_model", nullable = false)

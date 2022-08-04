@@ -162,8 +162,7 @@ public class JobConfig {
                             Integer.valueOf(fieldsValues[3]),
                             Integer.valueOf(fieldsValues[4]),
                             Integer.valueOf(fieldsValues[5]),
-                            fieldsValues[6],
-                            1);
+                            fieldsValues[6]);
                     return modelDto;
                 })
                 .build();
@@ -173,8 +172,8 @@ public class JobConfig {
     public ItemWriter<ModelDto> modelWriter() {
         return new JdbcBatchItemWriterBuilder<ModelDto>()
                 .dataSource(dataSource)
-                .sql("insert into model(id_model, model, id_vendor, description, id_gender, id_age, price, id_product_type) " +
-                        "values (:id, :modelName, :idVendor, :description, :idGender, :idAge, :price, :idProductType)")
+                .sql("insert into model(id_model, model, id_vendor, description, id_gender, id_age, price) " +
+                        "values (:id, :modelName, :idVendor, :description, :idGender, :idAge, :price)")
                 .beanMapped()
                 .build();
     }
@@ -389,7 +388,7 @@ public class JobConfig {
     public ItemWriter<SkiDto> skiProductWriter() {
         return new JdbcBatchItemWriterBuilder<SkiDto>()
                 .dataSource(dataSource)
-                .sql("insert into product(id_product, id_model, qty_available) values (:id, :idModel, :qtyAvailable)")
+                .sql("insert into product(id_product, id_product_type, id_model, qty_available) values (:id, 1, :idModel, :qtyAvailable)")
                 .beanMapped()
                 .build();
     }
