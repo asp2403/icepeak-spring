@@ -14,6 +14,11 @@ public class Boots extends Product{
     public Boots() {
     }
 
+    public Boots(long id, Model model, int qtyAvailable, int qtyReserved, float size) {
+        super(id, model, qtyAvailable, qtyReserved);
+        this.size = size;
+    }
+
     public float getSize() {
         return size;
     }

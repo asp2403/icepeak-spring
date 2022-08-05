@@ -1,5 +1,6 @@
 package aspopov.icepeak.warehouse.repository;
 
+import aspopov.icepeak.warehouse.domain.Boots;
 import aspopov.icepeak.warehouse.domain.Model;
 import aspopov.icepeak.warehouse.domain.Ski;
 import aspopov.icepeak.warehouse.dto.ModelSearchParams;
@@ -8,10 +9,6 @@ import org.springframework.data.jpa.domain.Specification;
 import static org.springframework.data.jpa.domain.Specification.where;
 
 public class ModelSpecification {
-
-    private static final int PRODUCT_SKI = 1;
-    private static final int PRODUCT_BOOTS = 2;
-
 
     public static Specification<Model> build(ModelSearchParams modelSearchParams) {
         return
@@ -24,7 +21,17 @@ public class ModelSpecification {
                         .and(age(modelSearchParams.getIdAge()))
                         .and(priceFrom(modelSearchParams.getPriceFrom()))
                         .and(priceTo(modelSearchParams.getPriceTo()))
+                        .and(sizeFrom(modelSearchParams.getSizeFrom()))
+                        .and(sizeTo(modelSearchParams.getSizeTo()))
+                        .and(category(modelSearchParams.getCategory()))
                 ;
+    }
+
+    private static Specification<Model> category(Short category) {
+        if (category == null) {
+            return null;
+        }
+        return (root, query, cb) -> cb.equal(root.get("category"), category);
     }
 
     private static Specification<Model> nameLike(String name) {
@@ -72,6 +79,30 @@ public class ModelSpecification {
         };
     }
 
+    private static Specification<Model> sizeFrom(Float size) {
+        if (size == null) {
+            return null;
+        }
+        return (root, query, cb) -> {
+            query.distinct(true);
+            var productJoin = root.join("products");
+            var boots = cb.treat(productJoin, Boots.class);
+            return cb.ge(boots.get("size"), size);
+        };
+    }
+
+    private static Specification<Model> sizeTo(Float size) {
+        if (size == null) {
+            return null;
+        }
+        return (root, query, cb) -> {
+            query.distinct(true);
+            var productJoin = root.join("products");
+            var boots = cb.treat(productJoin, Boots.class);
+            return cb.le(boots.get("size"), size);
+        };
+    }
+
     private static Specification<Model> vendorNameLike(String name) {
         if (name == null) {
             return null;
@@ -101,8 +132,6 @@ public class ModelSpecification {
             return cb.equal(ageJoin.get("id"), idAge);
         };
     }
-
-
 
 
 }

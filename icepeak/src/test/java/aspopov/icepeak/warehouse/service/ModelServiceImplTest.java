@@ -40,11 +40,17 @@ class ModelServiceImplTest {
     private SkiRepository skiRepository;
 
     @Autowired
+    private BootsRepository bootsRepository;
+
+    @Autowired
     private ModelService modelService;
 
     private Model model_V1_A1_G1_P100;
     private Model model_V2_A1_G2_P200;
     private Model model_V2_A1_G2_P300;
+
+    private Model model_B_V1;
+    private Model model_B_V2;
 
     @BeforeAll
     public void setup() {
@@ -59,13 +65,18 @@ class ModelServiceImplTest {
         vendorRepository.save(vendor1);
         vendorRepository.save(vendor2);
 
-        model_V1_A1_G1_P100 = new Model(1,"model_V1_A1_G1_P100", vendor1, gender1, age1,100);
-        model_V2_A1_G2_P200 = new Model(2,"model_V2_A1_G2_P200", vendor2, gender2, age1,200);
-        model_V2_A1_G2_P300 = new Model(3,"model_V2_A1_G2_P300", vendor2, gender2, age1,300);
+        model_V1_A1_G1_P100 = new Model(1, Category.SKI, "model_V1_A1_G1_P100", vendor1, gender1, age1,100);
+        model_V2_A1_G2_P200 = new Model(2, Category.SKI,"model_V2_A1_G2_P200", vendor2, gender2, age1,200);
+        model_V2_A1_G2_P300 = new Model(3, Category.SKI,"model_V2_A1_G2_P300", vendor2, gender2, age1,300);
+
+        model_B_V1 = new Model(4, Category.BOOTS, "model_B_V1", vendor1, gender1, age1, 50);
+        model_B_V2 = new Model(5, Category.BOOTS, "model_B_V2", vendor1, gender2, age2, 70);
 
         modelRepository.save(model_V1_A1_G1_P100);
         modelRepository.save(model_V2_A1_G2_P200);
         modelRepository.save(model_V2_A1_G2_P300);
+        modelRepository.save(model_B_V1);
+        modelRepository.save(model_B_V2);
 
         var ski11 = new Ski(11, model_V1_A1_G1_P100, 10, 0, 170);
         var ski12 = new Ski(12, model_V1_A1_G1_P100, 10, 0, 180);
@@ -81,6 +92,13 @@ class ModelServiceImplTest {
         skiRepository.save(ski21);
         skiRepository.save(ski31);
 
+        var boots1 = new Boots(1, model_B_V1, 1, 0, 25);
+        var boots2 = new Boots(1, model_B_V1, 1, 0, 26);
+        var boots3 = new Boots(1, model_B_V2, 1, 0, 27);
+
+        bootsRepository.save(boots1);
+        bootsRepository.save(boots2);
+        bootsRepository.save(boots3);
     }
 
 
@@ -106,16 +124,23 @@ class ModelServiceImplTest {
         var l2 = List.of(model_V2_A1_G2_P200, model_V2_A1_G2_P300);
         var sp3 = new ModelSearchParams();
         sp3.setPriceTo(200);
-        var l3 = List.of(model_V1_A1_G1_P100, model_V2_A1_G2_P200);
+        var l3 = List.of(model_V1_A1_G1_P100, model_V2_A1_G2_P200, model_B_V1, model_B_V2);
         var sp4 = new ModelSearchParams();
         sp4.setModelName("P100");
         var l4 = List.of(model_V1_A1_G1_P100);
         var sp5 = new ModelSearchParams();
         sp5.setIdAge(1L);
-        var l5 = List.of(model_V1_A1_G1_P100, model_V2_A1_G2_P200, model_V2_A1_G2_P300);
+        var l5 = List.of(model_V1_A1_G1_P100, model_V2_A1_G2_P200, model_V2_A1_G2_P300, model_B_V1);
         var sp6 = new ModelSearchParams();
         sp6.setIdGender(1L);
-        var l6 = List.of(model_V1_A1_G1_P100);
+        var l6 = List.of(model_V1_A1_G1_P100, model_B_V1);
+        var sp7 = new ModelSearchParams();
+        sp7.setCategory(Category.BOOTS);
+        var l7 = List.of(model_B_V1, model_B_V2);
+        var sp8 = new ModelSearchParams();
+        sp8.setSizeFrom(25f);
+        sp8.setSizeTo(26f);
+        var l8 = List.of(model_B_V1);
 
         return Stream.of(
                 Arguments.of(sp1, l1),
@@ -123,7 +148,9 @@ class ModelServiceImplTest {
                 Arguments.of(sp3, l3),
                 Arguments.of(sp4, l4),
                 Arguments.of(sp5, l5),
-                Arguments.of(sp6, l6)
+                Arguments.of(sp6, l6),
+                Arguments.of(sp7, l7),
+                Arguments.of(sp8, l8)
         );
     }
 }

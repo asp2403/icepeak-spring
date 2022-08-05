@@ -9,6 +9,33 @@ public class ModelSearchParams {
     private Long idAge;
     private Integer priceFrom;
     private Integer priceTo;
+    private Float sizeFrom;
+    private Float sizeTo;
+    private Short category;
+
+    public Short getCategory() {
+        return category;
+    }
+
+    public void setCategory(Short category) {
+        this.category = category;
+    }
+
+    public Float getSizeFrom() {
+        return sizeFrom;
+    }
+
+    public void setSizeFrom(Float sizeFrom) {
+        this.sizeFrom = sizeFrom;
+    }
+
+    public Float getSizeTo() {
+        return sizeTo;
+    }
+
+    public void setSizeTo(Float sizeTo) {
+        this.sizeTo = sizeTo;
+    }
 
     public String getModelName() {
         return modelName;

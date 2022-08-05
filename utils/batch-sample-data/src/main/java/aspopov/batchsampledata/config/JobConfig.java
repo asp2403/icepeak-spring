@@ -155,12 +155,13 @@ public class JobConfig {
                     var fieldsValues = s.split(",");
                     var modelDto = new ModelDto(
                             Long.valueOf(fieldsValues[0]),
-                            fieldsValues[1],
-                            Long.valueOf(fieldsValues[2]),
-                            Integer.valueOf(fieldsValues[3]),
+                            Short.valueOf(fieldsValues[1]),
+                            fieldsValues[2],
+                            Long.valueOf(fieldsValues[3]),
                             Integer.valueOf(fieldsValues[4]),
                             Integer.valueOf(fieldsValues[5]),
-                            fieldsValues[6]);
+                            Integer.valueOf(fieldsValues[6]),
+                            fieldsValues[7]);
                     return modelDto;
                 })
                 .build();
@@ -170,8 +171,8 @@ public class JobConfig {
     public ItemWriter<ModelDto> modelWriter() {
         return new JdbcBatchItemWriterBuilder<ModelDto>()
                 .dataSource(dataSource)
-                .sql("insert into model(id_model, model, id_vendor, description, id_gender, id_age, price) " +
-                        "values (:id, :modelName, :idVendor, :description, :idGender, :idAge, :price)")
+                .sql("insert into model(id_model, category, model, id_vendor, description, id_gender, id_age, price) " +
+                        "values (:id, :category, :modelName, :idVendor, :description, :idGender, :idAge, :price)")
                 .beanMapped()
                 .build();
     }

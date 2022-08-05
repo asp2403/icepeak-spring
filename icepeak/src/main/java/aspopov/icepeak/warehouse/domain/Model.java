@@ -15,6 +15,9 @@ public class Model {
     @Column(name = "id_model")
     private long id;
 
+    @Column(name="category", nullable = false)
+    private short category;
+
     @Column(name = "model", nullable = false)
     private String name;
 
@@ -45,8 +48,9 @@ public class Model {
     @OneToMany(mappedBy = "model")
     private List<Product> products;
 
-    public Model(long id, String name, Vendor vendor, Gender gender, Age age, int price) {
+    public Model(long id, short category, String name, Vendor vendor, Gender gender, Age age, int price) {
         this.id = id;
+        this.category = category;
         this.name = name;
         this.vendor = vendor;
         this.gender = gender;
@@ -63,15 +67,23 @@ public class Model {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Model model = (Model) o;
-        return id == model.id && price == model.price && Objects.equals(name, model.name) && Objects.equals(vendor, model.vendor) && Objects.equals(description, model.description) && Objects.equals(gender, model.gender) && Objects.equals(age, model.age) && Arrays.equals(imageSmall, model.imageSmall) && Arrays.equals(imageLarge, model.imageLarge) && Objects.equals(products, model.products);
+        return id == model.id && category == model.category && price == model.price && Objects.equals(name, model.name) && Objects.equals(vendor, model.vendor) && Objects.equals(description, model.description) && Objects.equals(gender, model.gender) && Objects.equals(age, model.age) && Arrays.equals(imageSmall, model.imageSmall) && Arrays.equals(imageLarge, model.imageLarge) && Objects.equals(products, model.products);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(id, name, vendor, description, gender, age, price, products);
+        int result = Objects.hash(id, category, name, vendor, description, gender, age, price, products);
         result = 31 * result + Arrays.hashCode(imageSmall);
         result = 31 * result + Arrays.hashCode(imageLarge);
         return result;
+    }
+
+    public short getCategory() {
+        return category;
+    }
+
+    public void setCategory(short category) {
+        this.category = category;
     }
 
     public long getId() {

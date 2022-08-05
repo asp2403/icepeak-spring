@@ -16,6 +16,7 @@ create table d_age(
 
 create table model(
     id_model bigserial not null primary key,
+    category smallint not null,
     model varchar(255) not null,
     id_vendor bigint not null,
     description text,
@@ -32,6 +33,7 @@ create table model(
 create index ix_model_id_vendor on model(id_vendor);
 create index ix_model_id_gender on model(id_gender);
 create index ix_model_id_age on model(id_age);
+create index ix_category on model(category);
 create unique index uq_model_model on model(model);
 
 create table product(

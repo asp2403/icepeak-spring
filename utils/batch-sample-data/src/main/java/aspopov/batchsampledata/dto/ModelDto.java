@@ -3,6 +3,7 @@ package aspopov.batchsampledata.dto;
 
 public class ModelDto {
     private long id;
+    private short category;
     private String modelName;
     private long idVendor;
     private int price;
@@ -11,8 +12,9 @@ public class ModelDto {
     private String description;
 
 
-    public ModelDto(long id, String modelName, long idVendor, int price, int idGender, int idAge, String description) {
+    public ModelDto(long id, short category, String modelName, long idVendor, int price, int idGender, int idAge, String description) {
         this.id = id;
+        this.category = category;
         this.modelName = modelName;
         this.idVendor = idVendor;
         this.price = price;
@@ -27,6 +29,14 @@ public class ModelDto {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public short getCategory() {
+        return category;
+    }
+
+    public void setCategory(short category) {
+        this.category = category;
     }
 
     public String getModelName() {
