@@ -32,6 +32,7 @@ create table model(
 create index ix_model_id_vendor on model(id_vendor);
 create index ix_model_id_gender on model(id_gender);
 create index ix_model_id_age on model(id_age);
+create unique index uq_model_model on model(model);
 
 create table product(
     id_product serial primary key,

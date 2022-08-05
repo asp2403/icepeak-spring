@@ -1,10 +1,7 @@
 package aspopov.batchsampledata.config;
 
 
-import aspopov.batchsampledata.dto.ModelDto;
-import aspopov.batchsampledata.dto.ImageDto;
-import aspopov.batchsampledata.dto.SkiDto;
-import aspopov.batchsampledata.dto.VendorDto;
+import aspopov.batchsampledata.dto.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.*;
@@ -21,7 +18,6 @@ import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.support.IteratorItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
@@ -69,6 +65,8 @@ public class JobConfig {
                 .next(loadModelSmallImages())
                 .next(loadSkiProducts())
                 .next(loadSki())
+                .next(loadBootsProducts())
+                .next(loadBoots())
                 .build();
     }
 
@@ -152,7 +150,7 @@ public class JobConfig {
     public FlatFileItemReader<ModelDto> modelReader() {
         return new FlatFileItemReaderBuilder<ModelDto>()
                 .name("modelItemReader")
-                .resource(new FileSystemResource(appProperties.getSkiModelsFile()))
+                .resource(new FileSystemResource(appProperties.getModelsFile()))
                 .lineMapper((s, i) -> {
                     var fieldsValues = s.split(",");
                     var modelDto = new ModelDto(
@@ -226,7 +224,7 @@ public class JobConfig {
 
     @Bean
     public ItemReader<File> modelImageLargeReader() throws IOException {
-        List<File> files = Files.walk(Paths.get(appProperties.getSkiImagesLarge()))
+        List<File> files = Files.walk(Paths.get(appProperties.getImagesLarge()))
                 .filter(Files::isRegularFile)
                 .map(Path::toFile)
                 .collect(Collectors.toList());
@@ -304,7 +302,7 @@ public class JobConfig {
 
     @Bean
     public ItemReader<File> modelImageSmallReader() throws IOException {
-        List<File> files = Files.walk(Paths.get(appProperties.getSkiImagesSmall()))
+        List<File> files = Files.walk(Paths.get(appProperties.getImagesSmall()))
                 .filter(Files::isRegularFile)
                 .map(Path::toFile)
                 .collect(Collectors.toList());
@@ -385,8 +383,9 @@ public class JobConfig {
     }
 
     @Bean
-    public ItemWriter<SkiDto> skiProductWriter() {
-        return new JdbcBatchItemWriterBuilder<SkiDto>()
+    @StepScope
+    public ItemWriter<ProductDto> productWriter() {
+        return new JdbcBatchItemWriterBuilder<ProductDto>()
                 .dataSource(dataSource)
                 .sql("insert into product(id_product, id_model, qty_available) values (:id, :idModel, :qtyAvailable)")
                 .beanMapped()
@@ -398,7 +397,7 @@ public class JobConfig {
         return stepBuilderFactory.get("loadSkiProductStep")
                 .<SkiDto, SkiDto>chunk(CHUNK_SIZE)
                 .reader(skiProductReader())
-                .writer(skiProductWriter())
+                .writer(productWriter())
                 .listener(new ItemReadListener<SkiDto>() {
 
 
@@ -436,6 +435,70 @@ public class JobConfig {
                 .allowStartIfComplete(true)
                 .build();
     }
+
+    @StepScope
+    @Bean
+    public FlatFileItemReader<BootsDto> bootsProductReader() {
+        return new FlatFileItemReaderBuilder<BootsDto>()
+                .name("bootsProductReader")
+                .resource(new FileSystemResource(appProperties.getBootsFile()))
+                .lineMapper((s, i) -> {
+                    var fieldsValues = s.split(",");
+                    var bootsDto = new BootsDto(
+                            Long.valueOf(fieldsValues[0]),
+                            Long.valueOf(fieldsValues[1]),
+                            Float.valueOf(fieldsValues[2]),
+                            Integer.valueOf(fieldsValues[3])
+                    );
+                    return bootsDto;
+                })
+                .build();
+    }
+
+    @Bean
+    public Step loadBootsProducts() {
+        return stepBuilderFactory.get("loadBootsProductStep")
+                .<BootsDto, ProductDto>chunk(CHUNK_SIZE)
+                .reader(bootsProductReader())
+                .writer(productWriter())
+                .listener(new ItemReadListener<BootsDto>() {
+
+
+                              @Override
+                              public void beforeRead() {
+
+                              }
+
+                              @Override
+                              public void afterRead(BootsDto bootsDto) {
+                                  logger.info(String.valueOf(bootsDto.getId()));
+                              }
+
+                              @Override
+                              public void onReadError(@NonNull Exception e) {
+                                  logger.info("Ошибка чтения");
+                              }
+                          }
+
+                )
+                .listener(new StepExecutionListener() {
+                              @Override
+                              public void beforeStep(StepExecution stepExecution) {
+                                  logger.info("Импортируем продукты (ботинки)...");
+                              }
+
+                              @Override
+                              public ExitStatus afterStep(StepExecution stepExecution) {
+                                  return null;
+                              }
+
+                          }
+
+                )
+                .allowStartIfComplete(true)
+                .build();
+    }
+
 
     @Bean
     public ItemWriter<SkiDto> skiWriter() {
@@ -476,6 +539,60 @@ public class JobConfig {
                               @Override
                               public void beforeStep(StepExecution stepExecution) {
                                   logger.info("Импортируем лыжи...");
+                              }
+
+                              @Override
+                              public ExitStatus afterStep(StepExecution stepExecution) {
+                                  return null;
+                              }
+
+                          }
+
+                )
+                .allowStartIfComplete(true)
+                .build();
+    }
+
+    @Bean
+    public ItemWriter<BootsDto> bootsWriter() {
+        return new JdbcBatchItemWriterBuilder<BootsDto>()
+                .dataSource(dataSource)
+                .sql("insert into boots(id_product, size) values (:id, :size)")
+                .beanMapped()
+                .build();
+    }
+
+
+    @Bean
+    public Step loadBoots() {
+        return stepBuilderFactory.get("loadBootsStep")
+                .<BootsDto, BootsDto>chunk(CHUNK_SIZE)
+                .reader(bootsProductReader())
+                .writer(bootsWriter())
+                .listener(new ItemReadListener<BootsDto>() {
+
+
+                              @Override
+                              public void beforeRead() {
+
+                              }
+
+                              @Override
+                              public void afterRead(BootsDto bootsDto) {
+                                  logger.info(String.valueOf(bootsDto.getId()));
+                              }
+
+                              @Override
+                              public void onReadError(@NonNull Exception e) {
+                                  logger.info("Ошибка чтения");
+                              }
+                          }
+
+                )
+                .listener(new StepExecutionListener() {
+                              @Override
+                              public void beforeStep(StepExecution stepExecution) {
+                                  logger.info("Импортируем ботинки...");
                               }
 
                               @Override

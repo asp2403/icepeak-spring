@@ -9,16 +9,16 @@ import java.util.Objects;
 public class Boots extends Product{
 
     @Column(name = "size", nullable = false)
-    private int size;
+    private float size;
 
     public Boots() {
     }
 
-    public int getSize() {
+    public float getSize() {
         return size;
     }
 
-    public void setSize(int size) {
+    public void setSize(float size) {
         this.size = size;
     }
 

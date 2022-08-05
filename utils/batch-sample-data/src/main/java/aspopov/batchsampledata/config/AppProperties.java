@@ -6,18 +6,19 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "app")
 public class AppProperties {
-    private String skiModelsFile;
+    private String modelsFile;
     private String vendorsFile;
-    private String skiImagesLarge;
-    private String skiImagesSmall;
+    private String imagesLarge;
+    private String imagesSmall;
     private String skiFile;
+    private String bootsFile;
 
-    public String getSkiModelsFile() {
-        return skiModelsFile;
+    public String getModelsFile() {
+        return modelsFile;
     }
 
-    public void setSkiModelsFile(String skiModelsFile) {
-        this.skiModelsFile = skiModelsFile;
+    public void setModelsFile(String modelsFile) {
+        this.modelsFile = modelsFile;
     }
 
     public String getVendorsFile() {
@@ -28,20 +29,20 @@ public class AppProperties {
         this.vendorsFile = vendorsFile;
     }
 
-    public String getSkiImagesLarge() {
-        return skiImagesLarge;
+    public String getImagesLarge() {
+        return imagesLarge;
     }
 
-    public void setSkiImagesLarge(String skiImagesLarge) {
-        this.skiImagesLarge = skiImagesLarge;
+    public void setImagesLarge(String imagesLarge) {
+        this.imagesLarge = imagesLarge;
     }
 
-    public String getSkiImagesSmall() {
-        return skiImagesSmall;
+    public String getImagesSmall() {
+        return imagesSmall;
     }
 
-    public void setSkiImagesSmall(String skiImagesSmall) {
-        this.skiImagesSmall = skiImagesSmall;
+    public void setImagesSmall(String imagesSmall) {
+        this.imagesSmall = imagesSmall;
     }
 
     public String getSkiFile() {
@@ -50,5 +51,13 @@ public class AppProperties {
 
     public void setSkiFile(String skiFile) {
         this.skiFile = skiFile;
+    }
+
+    public String getBootsFile() {
+        return bootsFile;
+    }
+
+    public void setBootsFile(String bootsFile) {
+        this.bootsFile = bootsFile;
     }
 }
