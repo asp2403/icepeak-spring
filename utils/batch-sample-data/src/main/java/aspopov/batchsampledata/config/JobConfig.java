@@ -388,7 +388,7 @@ public class JobConfig {
     public ItemWriter<SkiDto> skiProductWriter() {
         return new JdbcBatchItemWriterBuilder<SkiDto>()
                 .dataSource(dataSource)
-                .sql("insert into product(id_product, id_product_type, id_model, qty_available) values (:id, 1, :idModel, :qtyAvailable)")
+                .sql("insert into product(id_product, id_model, qty_available) values (:id, :idModel, :qtyAvailable)")
                 .beanMapped()
                 .build();
     }

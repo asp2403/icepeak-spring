@@ -1,9 +1,4 @@
 
-create table d_product_type(
-    id_product_type bigserial not null primary key,
-    product_type varchar(255) not null
-);
-
 create table vendor(
     id_vendor bigserial not null primary key,
     vendor varchar(255) not null
@@ -40,13 +35,10 @@ create index ix_model_id_age on model(id_age);
 
 create table product(
     id_product serial primary key,
-    id_product_type bigint not null,
     id_model bigint not null,
     qty_available integer not null,
     qty_reserved integer not null,
-    constraint fk_product_d_product_type foreign key(id_product_type) references d_product_type(id_product_type),
     constraint fk_product_model foreign key(id_model) references model(id_model) on delete cascade
 );
 
-create index ix_product_id_product_type on product(id_product_type);
 create index ix_product_id_model on product(id_model);

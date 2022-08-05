@@ -5,8 +5,8 @@ public class ModelSearchParams {
     private Integer heightFrom;
     private Integer heightTo;
     private String vendorName;
-    private Integer idGender;
-    private Integer idAge;
+    private Long idGender;
+    private Long idAge;
     private Integer priceFrom;
     private Integer priceTo;
 
@@ -42,19 +42,19 @@ public class ModelSearchParams {
         this.vendorName = vendorName;
     }
 
-    public Integer getIdGender() {
+    public Long getIdGender() {
         return idGender;
     }
 
-    public void setIdGender(Integer idGender) {
+    public void setIdGender(Long idGender) {
         this.idGender = idGender;
     }
 
-    public Integer getIdAge() {
+    public Long getIdAge() {
         return idAge;
     }
 
-    public void setIdAge(Integer idAge) {
+    public void setIdAge(Long idAge) {
         this.idAge = idAge;
     }
 

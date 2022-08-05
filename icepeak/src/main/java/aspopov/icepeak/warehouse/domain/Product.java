@@ -1,21 +1,17 @@
 package aspopov.icepeak.warehouse.domain;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "product")
 @Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "id_product_type", discriminatorType = DiscriminatorType.INTEGER)
 public class Product {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_product")
     private long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_product_type", nullable = false)
-    private ProductType productType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_model", nullable = false)
@@ -28,6 +24,26 @@ public class Product {
     private int qtyReserved;
 
     public Product() {
+    }
+
+    public Product(long id, Model model, int qtyAvailable, int qtyReserved) {
+        this.id = id;
+        this.model = model;
+        this.qtyAvailable = qtyAvailable;
+        this.qtyReserved = qtyReserved;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return id == product.id && qtyAvailable == product.qtyAvailable && qtyReserved == product.qtyReserved && Objects.equals(model, product.model);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, model, qtyAvailable, qtyReserved);
     }
 
     public long getId() {

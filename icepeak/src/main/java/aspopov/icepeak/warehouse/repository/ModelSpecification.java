@@ -82,7 +82,7 @@ public class ModelSpecification {
         };
     }
 
-    private static Specification<Model> gender(Integer idGender) {
+    private static Specification<Model> gender(Long idGender) {
         if (idGender == null) {
             return null;
         }
@@ -92,7 +92,7 @@ public class ModelSpecification {
         };
     }
 
-    private static Specification<Model> age(Integer idAge) {
+    private static Specification<Model> age(Long idAge) {
         if (idAge == null) {
             return null;
         }

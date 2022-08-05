@@ -3,6 +3,7 @@ package aspopov.icepeak.warehouse.domain;
 import org.hibernate.annotations.Fetch;
 
 import javax.persistence.*;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -10,7 +11,7 @@ import java.util.Objects;
 @Table(name = "model")
 public class Model {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_model")
     private long id;
 
@@ -21,7 +22,7 @@ public class Model {
     @JoinColumn(name = "id_vendor", nullable = false)
     private Vendor vendor;
 
-    @Column(name = "description", nullable = false)
+    @Column(name = "description")
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -44,6 +45,15 @@ public class Model {
     @OneToMany(mappedBy = "model")
     private List<Product> products;
 
+    public Model(long id, String name, Vendor vendor, Gender gender, Age age, int price) {
+        this.id = id;
+        this.name = name;
+        this.vendor = vendor;
+        this.gender = gender;
+        this.age = age;
+        this.price = price;
+    }
+
     public Model() {
 
     }
@@ -53,12 +63,15 @@ public class Model {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Model model = (Model) o;
-        return id == model.id;
+        return id == model.id && price == model.price && Objects.equals(name, model.name) && Objects.equals(vendor, model.vendor) && Objects.equals(description, model.description) && Objects.equals(gender, model.gender) && Objects.equals(age, model.age) && Arrays.equals(imageSmall, model.imageSmall) && Arrays.equals(imageLarge, model.imageLarge) && Objects.equals(products, model.products);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        int result = Objects.hash(id, name, vendor, description, gender, age, price, products);
+        result = 31 * result + Arrays.hashCode(imageSmall);
+        result = 31 * result + Arrays.hashCode(imageLarge);
+        return result;
     }
 
     public long getId() {
