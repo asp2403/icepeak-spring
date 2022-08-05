@@ -31,6 +31,7 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Model> search(ModelSearchParams searchParams) {
         var spec = ModelSpecification.build(searchParams);
         return modelRepository.findAll(spec);

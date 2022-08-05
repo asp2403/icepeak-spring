@@ -19,7 +19,7 @@ public class ModelController {
         this.modelService = modelService;
     }
 
-    @GetMapping("/api/model/search")
+    @GetMapping("/api/models/search")
     Page<ModelShortDto> search(ModelSearchParams searchParams, Pageable pageable) {
         var models = modelService.search(searchParams, pageable);
         var modelsDto = models.map(ModelShortDto::fromDomain);
