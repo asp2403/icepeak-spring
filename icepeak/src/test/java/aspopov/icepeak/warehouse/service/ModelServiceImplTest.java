@@ -3,7 +3,6 @@ package aspopov.icepeak.warehouse.service;
 import aspopov.icepeak.warehouse.domain.*;
 import aspopov.icepeak.warehouse.dto.ModelSearchParams;
 import aspopov.icepeak.warehouse.repository.*;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -17,7 +16,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -120,19 +118,19 @@ class ModelServiceImplTest {
         sp1.setHeightTo(180);
         var l1 = List.of(model_V1_A1_G1_P100, model_V2_A1_G2_P200);
         var sp2 = new ModelSearchParams();
-        sp2.setVendorName("endor2");
+        sp2.setVendor(2L);
         var l2 = List.of(model_V2_A1_G2_P200, model_V2_A1_G2_P300);
         var sp3 = new ModelSearchParams();
         sp3.setPriceTo(200);
         var l3 = List.of(model_V1_A1_G1_P100, model_V2_A1_G2_P200, model_B_V1, model_B_V2);
         var sp4 = new ModelSearchParams();
-        sp4.setModelName("P100");
+        sp4.setModel("P100");
         var l4 = List.of(model_V1_A1_G1_P100);
         var sp5 = new ModelSearchParams();
-        sp5.setIdAge(1L);
+        sp5.setAge(1L);
         var l5 = List.of(model_V1_A1_G1_P100, model_V2_A1_G2_P200, model_V2_A1_G2_P300, model_B_V1);
         var sp6 = new ModelSearchParams();
-        sp6.setIdGender(1L);
+        sp6.setGender(1L);
         var l6 = List.of(model_V1_A1_G1_P100, model_B_V1);
         var sp7 = new ModelSearchParams();
         sp7.setCategory(Category.BOOTS);

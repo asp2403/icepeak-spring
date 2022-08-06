@@ -1,12 +1,12 @@
 package aspopov.icepeak.warehouse.dto;
 
 public class ModelSearchParams {
-    private String modelName;
+    private String model;
     private Integer heightFrom;
     private Integer heightTo;
-    private String vendorName;
-    private Long idGender;
-    private Long idAge;
+    private Long vendor;
+    private Long gender;
+    private Long age;
     private Integer priceFrom;
     private Integer priceTo;
     private Float sizeFrom;
@@ -37,12 +37,12 @@ public class ModelSearchParams {
         this.sizeTo = sizeTo;
     }
 
-    public String getModelName() {
-        return modelName;
+    public String getModel() {
+        return model;
     }
 
-    public void setModelName(String modelName) {
-        this.modelName = modelName;
+    public void setModel(String model) {
+        this.model = model;
     }
 
     public Integer getHeightFrom() {
@@ -61,28 +61,28 @@ public class ModelSearchParams {
         this.heightTo = heightTo;
     }
 
-    public String getVendorName() {
-        return vendorName;
+    public Long getVendor() {
+        return vendor;
     }
 
-    public void setVendorName(String vendorName) {
-        this.vendorName = vendorName;
+    public void setVendor(Long vendor) {
+        this.vendor = vendor;
     }
 
-    public Long getIdGender() {
-        return idGender;
+    public Long getGender() {
+        return gender;
     }
 
-    public void setIdGender(Long idGender) {
-        this.idGender = idGender;
+    public void setGender(Long gender) {
+        this.gender = gender;
     }
 
-    public Long getIdAge() {
-        return idAge;
+    public Long getAge() {
+        return age;
     }
 
-    public void setIdAge(Long idAge) {
-        this.idAge = idAge;
+    public void setAge(Long age) {
+        this.age = age;
     }
 
     public Integer getPriceFrom() {

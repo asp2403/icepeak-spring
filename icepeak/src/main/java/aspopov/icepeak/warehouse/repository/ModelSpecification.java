@@ -15,10 +15,10 @@ public class ModelSpecification {
 
                 where(heightFrom(modelSearchParams.getHeightFrom()))
                         .and(heightTo(modelSearchParams.getHeightTo()))
-                        .and(nameLike(modelSearchParams.getModelName()))
-                        .and(vendorNameLike(modelSearchParams.getVendorName()))
-                        .and(gender(modelSearchParams.getIdGender()))
-                        .and(age(modelSearchParams.getIdAge()))
+                        .and(nameLike(modelSearchParams.getModel()))
+                        .and(vendor(modelSearchParams.getVendor()))
+                        .and(gender(modelSearchParams.getGender()))
+                        .and(age(modelSearchParams.getAge()))
                         .and(priceFrom(modelSearchParams.getPriceFrom()))
                         .and(priceTo(modelSearchParams.getPriceTo()))
                         .and(sizeFrom(modelSearchParams.getSizeFrom()))
@@ -103,13 +103,13 @@ public class ModelSpecification {
         };
     }
 
-    private static Specification<Model> vendorNameLike(String name) {
-        if (name == null) {
+    private static Specification<Model> vendor(Long idVendor) {
+        if (idVendor == null) {
             return null;
         }
         return (root, query, cb) -> {
             var vendorJoin = root.join("vendor");
-            return cb.like(cb.lower(vendorJoin.get("name")), "%" + name.toLowerCase() + "%");
+            return cb.equal(vendorJoin.get("id"), idVendor);
         };
     }
 
