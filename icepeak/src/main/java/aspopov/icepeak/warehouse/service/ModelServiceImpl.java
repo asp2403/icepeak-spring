@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -35,5 +36,11 @@ public class ModelServiceImpl implements ModelService {
     public List<Model> search(ModelSearchParams searchParams) {
         var spec = ModelSpecification.build(searchParams);
         return modelRepository.findAll(spec);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<Model> getModel(long id) {
+        return modelRepository.findById(id);
     }
 }

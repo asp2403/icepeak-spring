@@ -1,11 +1,14 @@
 package aspopov.icepeak.warehouse.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Table(name = "product")
 @Inheritance(strategy = InheritanceType.JOINED)
+
 public class Product {
 
     @Id

@@ -157,4 +157,8 @@ public class Model {
     public void setImageLarge(byte[] imageLarge) {
         this.imageLarge = imageLarge;
     }
+
+    public List<Product> getProducts() {
+        return products;
+    }
 }
