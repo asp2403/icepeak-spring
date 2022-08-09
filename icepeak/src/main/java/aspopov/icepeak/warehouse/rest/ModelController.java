@@ -7,10 +7,9 @@ import aspopov.icepeak.warehouse.service.ModelService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,6 +30,13 @@ public class ModelController {
 
     @GetMapping("/api/models/{id}")
     ResponseEntity<ModelFullDto> getModel(@PathVariable long id) {
-        return ResponseEntity.of(modelService.getModel(id).map(ModelFullDto::fromDomain));
+        return ResponseEntity.of(modelService.findById(id).map(ModelFullDto::fromDomain));
     }
+
+    @GetMapping("/api/models/list")
+    List<ModelShortDto> findModels(Long[] ids) {
+        var models = modelService.findByModelIdIn(Arrays.asList(ids));
+        return models.stream().map(ModelShortDto::fromDomain).collect(Collectors.toList());
+    }
+
 }

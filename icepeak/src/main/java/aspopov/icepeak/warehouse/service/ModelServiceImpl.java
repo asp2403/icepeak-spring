@@ -1,6 +1,7 @@
 package aspopov.icepeak.warehouse.service;
 
 import aspopov.icepeak.warehouse.domain.Model;
+
 import aspopov.icepeak.warehouse.dto.ModelSearchParams;
 import aspopov.icepeak.warehouse.repository.ModelRepository;
 
@@ -40,7 +41,13 @@ public class ModelServiceImpl implements ModelService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<Model> getModel(long id) {
+    public Optional<Model> findById(long id) {
         return modelRepository.findById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Model> findByModelIdIn(List<Long> ids) {
+        return modelRepository.findByIdIn(ids);
     }
 }
