@@ -33,10 +33,15 @@ public class ModelController {
         return ResponseEntity.of(modelService.findById(id).map(ModelFullDto::fromDomain));
     }
 
-    @GetMapping("/api/models/list")
+    @GetMapping("/api/models/short/{id}")
+    ResponseEntity<ModelShortDto> getModelShort(@PathVariable long id) {
+        return ResponseEntity.of(modelService.findModelShortById(id).map(ModelShortDto::fromView));
+    }
+
+    @GetMapping("/api/models/short/list")
     List<ModelShortDto> findModels(Long[] ids) {
         var models = modelService.findByModelIdIn(Arrays.asList(ids));
-        return models.stream().map(ModelShortDto::fromDomain).collect(Collectors.toList());
+        return models.stream().map(ModelShortDto::fromView).collect(Collectors.toList());
     }
 
 }

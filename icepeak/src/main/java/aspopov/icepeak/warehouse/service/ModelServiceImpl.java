@@ -6,6 +6,7 @@ import aspopov.icepeak.warehouse.dto.ModelSearchParams;
 import aspopov.icepeak.warehouse.repository.ModelRepository;
 
 import aspopov.icepeak.warehouse.repository.ModelSpecification;
+import aspopov.icepeak.warehouse.repository.projection.ModelShortView;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -47,7 +48,13 @@ public class ModelServiceImpl implements ModelService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Model> findByModelIdIn(List<Long> ids) {
+    public List<ModelShortView> findByModelIdIn(List<Long> ids) {
         return modelRepository.findByIdIn(ids);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<ModelShortView> findModelShortById(long id) {
+        return modelRepository.findModelShortById(id);
     }
 }

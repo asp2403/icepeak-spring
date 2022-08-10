@@ -1,6 +1,7 @@
 package aspopov.icepeak.warehouse.repository;
 
 import aspopov.icepeak.warehouse.domain.Model;
+import aspopov.icepeak.warehouse.repository.projection.ModelShortView;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -16,6 +17,7 @@ public interface ModelRepository extends JpaRepository<Model, Long>, JpaSpecific
     @EntityGraph(attributePaths = "vendor")
     Page<Model> findAll(Specification<Model> spec, Pageable pageable);
 
-    @EntityGraph(attributePaths = "vendor")
-    List<Model> findByIdIn(List<Long> ids);
+    List<ModelShortView> findByIdIn(List<Long> ids);
+
+    Optional<ModelShortView> findModelShortById(long id);
 }

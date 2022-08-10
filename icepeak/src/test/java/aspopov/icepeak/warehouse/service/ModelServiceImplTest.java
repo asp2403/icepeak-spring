@@ -55,8 +55,8 @@ class ModelServiceImplTest {
         var age1 = ageRepository.findById(1L).get();
         var age2 = ageRepository.findById(2L).get();
 
-        var gender1 = genderRepository.findById(1L).get();
-        var gender2 = genderRepository.findById(2L).get();
+        var gender1 = genderRepository.findById(2L).get();
+        var gender2 = genderRepository.findById(3L).get();
 
         var vendor1 = new Vendor(1, "Vendor1");
         var vendor2 = new Vendor(2, "Vendor2");
@@ -130,7 +130,7 @@ class ModelServiceImplTest {
         sp5.setAge(1L);
         var l5 = List.of(model_V1_A1_G1_P100, model_V2_A1_G2_P200, model_V2_A1_G2_P300, model_B_V1);
         var sp6 = new ModelSearchParams();
-        sp6.setGender(1L);
+        sp6.setGender(2L);
         var l6 = List.of(model_V1_A1_G1_P100, model_B_V1);
         var sp7 = new ModelSearchParams();
         sp7.setCategory(Category.BOOTS);
