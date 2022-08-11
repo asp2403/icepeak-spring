@@ -16,6 +16,7 @@ import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilder;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
+import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.support.IteratorItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -152,7 +153,7 @@ public class JobConfig {
                 .name("modelItemReader")
                 .resource(new FileSystemResource(appProperties.getModelsFile()))
                 .lineMapper((s, i) -> {
-                    var fieldsValues = s.split(",");
+                    var fieldsValues = s.split(";");
                     var modelDto = new ModelDto(
                             Long.valueOf(fieldsValues[0]),
                             Short.valueOf(fieldsValues[1]),
