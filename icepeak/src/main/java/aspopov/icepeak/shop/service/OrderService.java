@@ -1,7 +1,6 @@
 package aspopov.icepeak.shop.service;
 
 import aspopov.icepeak.shop.domain.Order;
-import aspopov.icepeak.shop.dto.CreateOrderResult;
 import aspopov.icepeak.shop.dto.OrderDto;
 
 import java.util.Optional;
