@@ -16,7 +16,7 @@ public class Product {
     @Column(name = "id_product")
     private long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_model", nullable = false)
     private Model model;
 

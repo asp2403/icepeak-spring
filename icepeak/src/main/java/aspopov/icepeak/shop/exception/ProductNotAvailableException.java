@@ -7,4 +7,7 @@ public class ProductNotAvailableException extends  RuntimeException{
         this.idProduct = idProduct;
     }
 
+    public long getIdProduct() {
+        return idProduct;
+    }
 }

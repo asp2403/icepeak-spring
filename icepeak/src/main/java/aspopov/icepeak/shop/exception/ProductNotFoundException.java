@@ -7,4 +7,8 @@ public class ProductNotFoundException extends RuntimeException {
     public ProductNotFoundException(long idProduct) {
         this.idProduct = idProduct;
     }
+
+    public long getIdProduct() {
+        return idProduct;
+    }
 }

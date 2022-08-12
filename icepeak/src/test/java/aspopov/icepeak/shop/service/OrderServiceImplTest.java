@@ -3,6 +3,8 @@ package aspopov.icepeak.shop.service;
 import aspopov.icepeak.security.domain.Customer;
 import aspopov.icepeak.security.repository.CustomerRepository;
 import aspopov.icepeak.shop.domain.Order;
+import aspopov.icepeak.shop.domain.OrderItem;
+import aspopov.icepeak.shop.domain.OrderState;
 import aspopov.icepeak.shop.dto.OrderDto;
 import aspopov.icepeak.shop.dto.OrderItemDto;
 import aspopov.icepeak.shop.exception.CustomerNotFoundException;
@@ -15,6 +17,7 @@ import aspopov.icepeak.warehouse.domain.Product;
 import aspopov.icepeak.warehouse.repository.ProductRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.AdditionalAnswers;
 import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -68,21 +71,31 @@ class OrderServiceImplTest {
         product1.setModel(model1);
         product2.setModel(model2);
         var customer = new Customer();
-        var newOrder = new Order();
-        newOrder.setId(20);
+        var expectedOrder = new Order();
+        expectedOrder.setId(20);
+        expectedOrder.setOrderItems(List.of(new OrderItem(expectedOrder, 1, product1, 1, 100), new OrderItem(expectedOrder, 2, product2, 2, 200)));
+        expectedOrder.setState(OrderState.NEW);
+        expectedOrder.setCustomer(customer);
+
         given(productRepository.findById(eq(1L))).willReturn(Optional.of(product1));
         given(productRepository.findById(eq(2L))).willReturn(Optional.of(product2));
         given(customerRepository.findById(eq(1L))).willReturn(Optional.of(customer));
-        given(orderRepository.save(any())).willReturn(newOrder);
+        //given(orderRepository.save(eq(expectedOrder))).willReturn(expectedOrder);
+        when(orderRepository.save(any())).then(AdditionalAnswers.returnsFirstArg());
 
-        var orderNo = orderService.createOrder(orderDto);
+        var actualOrder = orderService.createOrder(orderDto);
 
         assertThat(product1.getQtyAvailable()).isEqualTo(9);
         assertThat(product2.getQtyAvailable()).isEqualTo(18);
         assertThat(product1.getQtyReserved()).isEqualTo(1);
         assertThat(product2.getQtyReserved()).isEqualTo(2);
 
-        assertThat(orderNo).isEqualTo(20);
+        assertThat(actualOrder).isNotNull();
+        assertThat(actualOrder.getOrderItems().size()).isEqualTo(2);
+        assertThat(actualOrder.getOrderItems().get(0).getProduct().getId()).isEqualTo(product1.getId());
+        assertThat(actualOrder.getOrderItems().get(0).getSalePrice()).isEqualTo(product1.getModel().getPrice());
+        assertThat(actualOrder.getOrderItems().get(1).getProduct().getId()).isEqualTo(product2.getId());
+        assertThat(actualOrder.getOrderItems().get(1).getSalePrice()).isEqualTo(product2.getModel().getPrice());
     }
 
     @Test

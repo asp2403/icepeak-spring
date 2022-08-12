@@ -3,7 +3,7 @@ package aspopov.icepeak.security.domain;
 import javax.persistence.*;
 
 @Entity()
-@Table(name = "user")
+@Table(name = "\"user\"")
 @Inheritance(strategy = InheritanceType.JOINED)
 
 public class User {
@@ -25,6 +25,9 @@ public class User {
 
     @Column(name = "email", nullable = false, unique = true)
     private String email;
+
+    @Column(name = "phone", nullable = false)
+    private String phone;
 
     @Column(name = "pwd_hash", nullable = false)
     private String pwdHash;

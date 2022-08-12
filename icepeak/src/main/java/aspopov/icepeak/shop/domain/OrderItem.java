@@ -5,7 +5,7 @@ import aspopov.icepeak.warehouse.domain.Product;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "product_order")
+@Table(name = "order_item")
 public class OrderItem {
 
     @Id
@@ -17,7 +17,7 @@ public class OrderItem {
     @JoinColumn(name = "id_product", nullable = false)
     private Product product;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_order", nullable = false)
     private Order order;
 
@@ -26,6 +26,19 @@ public class OrderItem {
 
     @Column(name = "sale_price", nullable = false)
     private int salePrice;
+
+    public OrderItem(Order order, long id, Product product, int qty, int salePrice) {
+        this.id = id;
+        this.product = product;
+        this.qty = qty;
+        this.salePrice = salePrice;
+        this.order = order;
+    }
+
+    public OrderItem() {
+    }
+
+
 
     public long getId() {
         return id;

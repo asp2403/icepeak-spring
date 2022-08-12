@@ -1,8 +1,12 @@
 package aspopov.icepeak.shop.service;
 
+import aspopov.icepeak.shop.domain.Order;
 import aspopov.icepeak.shop.dto.CreateOrderResult;
 import aspopov.icepeak.shop.dto.OrderDto;
 
+import java.util.Optional;
+
 public interface OrderService {
-    long createOrder(OrderDto orderDto);
+    Order createOrder(OrderDto orderDto);
+    Optional<Order> getOrder(long id);
 }

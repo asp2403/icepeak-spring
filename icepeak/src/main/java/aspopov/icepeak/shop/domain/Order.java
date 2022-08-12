@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 @Entity
-@Table(name = "order")
+@Table(name = "\"order\"")
 public class Order {
 
     @Id
@@ -23,6 +23,18 @@ public class Order {
     @JoinColumn(name = "id_customer")
     private Customer customer;
 
+    @Column(name = "name", nullable = false)
+    private String contactName;
+
+    @Column(name = "surname")
+    private String contactSurname;
+
+    @Column(name = "email", nullable = false)
+    private String contactEmail;
+
+    @Column(name = "phone", nullable = false)
+    private String contactPhone;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_manager")
     private User manager;
@@ -36,8 +48,40 @@ public class Order {
     @Column(name = "sale_date")
     private Timestamp saleDate;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     List<OrderItem> orderItems;
+
+    public String getContactName() {
+        return contactName;
+    }
+
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
+    }
+
+    public String getContactSurname() {
+        return contactSurname;
+    }
+
+    public void setContactSurname(String contactSurname) {
+        this.contactSurname = contactSurname;
+    }
+
+    public String getContactEmail() {
+        return contactEmail;
+    }
+
+    public void setContactEmail(String contactEmail) {
+        this.contactEmail = contactEmail;
+    }
+
+    public String getContactPhone() {
+        return contactPhone;
+    }
+
+    public void setContactPhone(String contactPhone) {
+        this.contactPhone = contactPhone;
+    }
 
     public long getId() {
         return id;
@@ -53,6 +97,7 @@ public class Order {
 
     public void setOrderItems(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
+        this.orderItems.forEach((item) -> item.setOrder(this));
     }
 
     public Timestamp getOrderDate() {
