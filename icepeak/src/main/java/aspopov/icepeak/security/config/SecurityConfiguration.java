@@ -18,6 +18,7 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private static final RequestMatcher PROTECTED_URLS = new OrRequestMatcher(
+            new AntPathRequestMatcher("/api/auth/logout/**", "POST", false),
             new AntPathRequestMatcher("/api/shop/**"),
             new AntPathRequestMatcher("/api/orders/**", "GET", false)
 //            new AntPathRequestMatcher("/api/books/**", "POST", false),

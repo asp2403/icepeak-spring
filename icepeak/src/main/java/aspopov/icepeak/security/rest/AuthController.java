@@ -1,7 +1,7 @@
 package aspopov.icepeak.security.rest;
 
 import aspopov.icepeak.security.dto.UserDetailsDto;
-import aspopov.icepeak.security.dto.UserDto;
+import aspopov.icepeak.security.dto.LoginDto;
 import aspopov.icepeak.security.service.UserService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,7 +20,7 @@ public class AuthController {
     }
 
     @PostMapping("/api/auth/login")
-    public UserDetailsDto getToken(@RequestBody UserDto userDto) {
+    public UserDetailsDto getToken(@RequestBody LoginDto userDto) {
         var user = userService.login(userDto.getUsername(), userDto.getPassword());
         return user.map(UserDetailsDto::fromDomainObject).orElseThrow(() -> new UsernameNotFoundException("Invalid login or password"));
     }

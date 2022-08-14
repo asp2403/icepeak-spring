@@ -1,60 +1,99 @@
 package aspopov.icepeak.security.dto;
 
+import aspopov.icepeak.security.domain.Role;
 import aspopov.icepeak.security.domain.User;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 
+import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.util.List;
 
 public class UserDetailsDto {
-    private String username;
-    private String fullName;
-    private List<SimpleGrantedAuthority> roles;
-    private String token;
 
-    public UserDetailsDto(String username, String fullName, List<SimpleGrantedAuthority> roles, String token) {
-        this.username = username;
-        this.fullName = fullName;
-        this.roles = roles;
-        this.token = token;
-    }
+    private long id;
 
-    public UserDetailsDto() {
-    }
+    private String roleName;
+
+    private String name;
+
+    private String surname;
+
+    private String email;
+
+    private String phone;
+
+    private String authToken;
 
     public static UserDetailsDto fromDomainObject(User user) {
-        return new UserDetailsDto(user.getUsername(), user.getFullName(), (List<SimpleGrantedAuthority>) user.getAuthorities(), user.getAuthToken());
+        return new UserDetailsDto(user.getId(), user.getRole().getRoleName().substring(5), user.getName(), user.getSurname(), user.getEmail(), user.getPhone(), user.getAuthToken());
     }
 
-    public String getUsername() {
-        return username;
+    public UserDetailsDto(long id, String roleName, String name, String surname, String email, String phone, String authToken) {
+        this.id = id;
+        this.roleName = roleName;
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.phone = phone;
+        this.authToken = authToken;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public String getAuthToken() {
+        return authToken;
     }
 
-    public String getFullName() {
-        return fullName;
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public long getId() {
+        return id;
     }
 
-    public List<SimpleGrantedAuthority> getRoles() {
-        return roles;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public void setRoles(List<SimpleGrantedAuthority> roles) {
-        this.roles = roles;
+    public String getRoleName() {
+        return roleName;
     }
 
-    public String getToken() {
-        return token;
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

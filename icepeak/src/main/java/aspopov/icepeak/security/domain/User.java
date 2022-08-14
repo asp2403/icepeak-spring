@@ -88,6 +88,14 @@ public class User implements UserDetails {
         this.email = email;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public String getPwdHash() {
         return pwdHash;
     }
