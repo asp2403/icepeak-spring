@@ -12,6 +12,15 @@ public class AppProperties {
     private String imagesSmall;
     private String skiFile;
     private String bootsFile;
+    private String usersFile;
+
+    public String getUsersFile() {
+        return usersFile;
+    }
+
+    public void setUsersFile(String usersFile) {
+        this.usersFile = usersFile;
+    }
 
     public String getModelsFile() {
         return modelsFile;

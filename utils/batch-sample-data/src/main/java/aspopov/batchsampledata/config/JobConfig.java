@@ -23,6 +23,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.lang.NonNull;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.sql.DataSource;
 import java.io.File;
@@ -68,6 +69,7 @@ public class JobConfig {
                 .next(loadSki())
                 .next(loadBootsProducts())
                 .next(loadBoots())
+                .next(loadUsers())
                 .build();
     }
 
@@ -606,6 +608,91 @@ public class JobConfig {
 
                 )
                 .allowStartIfComplete(true)
+                .build();
+    }
+
+    @Bean
+    public Step loadUsers() throws IOException {
+        return stepBuilderFactory.get("loadModelsImagesSmallStep")
+                .<UserDto, UserDto>chunk(CHUNK_SIZE)
+                .reader(userReader())
+                .processor(userProcessor())
+                .writer(userWriter())
+                .listener(new ItemReadListener<UserDto>() {
+
+
+                              @Override
+                              public void beforeRead() {
+
+                              }
+
+                              @Override
+                              public void afterRead(UserDto userDto) {
+                                  logger.info(userDto.getFullName());
+                              }
+
+                              @Override
+                              public void onReadError(@NonNull Exception e) {
+                                  logger.info("Ошибка чтения");
+                              }
+                          }
+
+                )
+                .listener(new StepExecutionListener() {
+                              @Override
+                              public void beforeStep(StepExecution stepExecution) {
+                                  logger.info("Импортируем пользователей...");
+                              }
+
+                              @Override
+                              public ExitStatus afterStep(StepExecution stepExecution) {
+                                  return null;
+                              }
+
+                          }
+
+                )
+                .allowStartIfComplete(true)
+                .build();
+    }
+
+    @Bean
+    public FlatFileItemReader<UserDto> userReader() {
+        return new FlatFileItemReaderBuilder<UserDto>()
+                .name("userReader")
+                .resource(new FileSystemResource(appProperties.getUsersFile()))
+                .lineMapper((s, i) -> {
+                    var fieldsValues = s.split(",");
+                    var userDto = new UserDto(
+                            Long.valueOf(fieldsValues[0]),
+                            Long.valueOf(fieldsValues[1]),
+                            fieldsValues[2],
+                            fieldsValues[3],
+                            fieldsValues[4],
+                            fieldsValues[5],
+                            fieldsValues[6]
+                    );
+                    return userDto;
+                })
+                .build();
+    }
+
+    @Bean
+    public ItemProcessor<UserDto, UserDto> userProcessor() {
+        return item -> {
+            var passwordEncoder = new BCryptPasswordEncoder();
+            var hash = passwordEncoder.encode(item.getPwd());
+            item.setPwd(hash);
+            return item;
+        };
+    }
+
+    @Bean
+    public ItemWriter<UserDto> userWriter() {
+        return new JdbcBatchItemWriterBuilder<UserDto>()
+                .dataSource(dataSource)
+                .sql("insert into \"user\"(id_user, id_role, name, surname, email, phone, pwd_hash, is_active) values (:id, :idRole, :name, :surname, :email, :phone, :pwd, true)")
+                .beanMapped()
                 .build();
     }
 

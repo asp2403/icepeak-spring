@@ -28,7 +28,6 @@ public class AuthenticationFilter extends AbstractAuthenticationProcessingFilter
 
         var token= httpServletRequest.getHeader(AUTHORIZATION);
         if (token != null) {
-            //token = StringUtils.removeStart(token, "Bearer").trim();
             token = (token.startsWith("Bearer") ? token.substring(6) : token).trim();
 
         }

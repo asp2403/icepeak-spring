@@ -38,11 +38,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(WebSecurity webSecurity) {
-        webSecurity.ignoring().antMatchers("/api/auth/login/**");
-    }
-
-    @Override
     public void configure( HttpSecurity http ) throws Exception {
         http.csrf().disable()
                 .sessionManagement()
@@ -81,6 +76,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .authorizeRequests()
                     .antMatchers(HttpMethod.GET,"/api/orders/**")
                     .authenticated()
+                .and()
+                    .authorizeRequests()
+                    .antMatchers( HttpMethod.POST,"/api/auth/login/**" )
+                    .permitAll()
                 .and()
                     .authorizeRequests()
                     .antMatchers( HttpMethod.GET,"/api/**" )
