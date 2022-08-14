@@ -4,6 +4,7 @@ import aspopov.icepeak.security.domain.User;
 import aspopov.icepeak.security.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -17,6 +18,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public Optional<User> login(String username, String password) {
         var user = userRepository.findByEmail(username);
         return user.flatMap(
@@ -35,12 +37,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<User> findByToken(String token) {
         var user = userRepository.findByAuthToken(token);
         return user;
     }
 
     @Override
+    @Transactional
     public void logout(String username) {
         var user = userRepository.findByEmail(username);
         user.ifPresent(

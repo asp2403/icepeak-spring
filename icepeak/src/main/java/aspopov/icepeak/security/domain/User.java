@@ -19,7 +19,7 @@ public class User implements UserDetails {
     @Column(name = "id_user")
     private long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_role", nullable = false)
     private Role role;
 
