@@ -613,7 +613,7 @@ public class JobConfig {
 
     @Bean
     public Step loadUsers() throws IOException {
-        return stepBuilderFactory.get("loadModelsImagesSmallStep")
+        return stepBuilderFactory.get("loadUsersStep")
                 .<UserDto, UserDto>chunk(CHUNK_SIZE)
                 .reader(userReader())
                 .processor(userProcessor())
@@ -665,12 +665,13 @@ public class JobConfig {
                     var fieldsValues = s.split(",");
                     var userDto = new UserDto(
                             Long.valueOf(fieldsValues[0]),
-                            Long.valueOf(fieldsValues[1]),
-                            fieldsValues[2],
+                            Integer.valueOf(fieldsValues[1]),
+                            Long.valueOf(fieldsValues[2]),
                             fieldsValues[3],
                             fieldsValues[4],
                             fieldsValues[5],
-                            fieldsValues[6]
+                            fieldsValues[6],
+                            fieldsValues[7]
                     );
                     return userDto;
                 })
@@ -691,7 +692,7 @@ public class JobConfig {
     public ItemWriter<UserDto> userWriter() {
         return new JdbcBatchItemWriterBuilder<UserDto>()
                 .dataSource(dataSource)
-                .sql("insert into \"user\"(id_user, id_role, name, surname, email, phone, pwd_hash, is_active) values (:id, :idRole, :name, :surname, :email, :phone, :pwd, true)")
+                .sql("insert into \"user\"(id_user, user_type, id_role, name, surname, email, phone, pwd_hash, is_active) values (:id, :userType, :idRole, :name, :surname, :email, :phone, :pwd, true)")
                 .beanMapped()
                 .build();
     }

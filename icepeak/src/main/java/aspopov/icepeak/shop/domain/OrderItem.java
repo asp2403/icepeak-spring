@@ -10,7 +10,7 @@ public class OrderItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_product_order")
+    @Column(name = "id_order_item")
     private long id;
 
     @ManyToOne

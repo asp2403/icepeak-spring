@@ -1,14 +1,12 @@
 package aspopov.icepeak.shop.service;
 
 import aspopov.icepeak.security.repository.CustomerRepository;
+import aspopov.icepeak.security.repository.ManagerRepository;
 import aspopov.icepeak.shop.domain.Order;
 import aspopov.icepeak.shop.domain.OrderItem;
 import aspopov.icepeak.shop.domain.OrderState;
 import aspopov.icepeak.shop.dto.OrderDto;
-import aspopov.icepeak.shop.exception.CustomerNotFoundException;
-import aspopov.icepeak.shop.exception.OrderIsEmptyException;
-import aspopov.icepeak.shop.exception.ProductNotAvailableException;
-import aspopov.icepeak.shop.exception.ProductNotFoundException;
+import aspopov.icepeak.shop.exception.*;
 import aspopov.icepeak.shop.repository.OrderItemRepository;
 import aspopov.icepeak.shop.repository.OrderRepository;
 import aspopov.icepeak.warehouse.repository.ProductRepository;
@@ -26,14 +24,16 @@ public class OrderServiceImpl implements OrderService {
     private final CustomerRepository customerRepository;
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
+    private final ManagerRepository managerRepository;
 
-
-    public OrderServiceImpl(ProductRepository productRepository, CustomerRepository customerRepository, OrderRepository orderRepository, OrderItemRepository orderItemRepository) {
+    public OrderServiceImpl(ProductRepository productRepository, CustomerRepository customerRepository, OrderRepository orderRepository, OrderItemRepository orderItemRepository, ManagerRepository managerRepository) {
         this.productRepository = productRepository;
         this.customerRepository = customerRepository;
         this.orderRepository = orderRepository;
         this.orderItemRepository = orderItemRepository;
+        this.managerRepository = managerRepository;
     }
+
 
     @Override
     @Transactional
@@ -89,5 +89,14 @@ public class OrderServiceImpl implements OrderService {
     @Transactional(readOnly = true)
     public Optional<Order> getOrder(long id) {
         return orderRepository.findById(id);
+    }
+
+    @Override
+    @Transactional
+    public Order assignManager(long idOrder, long idManager) {
+        var order = orderRepository.findById(idOrder).orElseThrow(() -> new OrderNotFoundException(idOrder));
+        var manager = managerRepository.findById(idManager).orElseThrow(() -> new ManagerNotFoundException(idManager));
+        order.setManager(manager);
+        return orderRepository.save(order);
     }
 }

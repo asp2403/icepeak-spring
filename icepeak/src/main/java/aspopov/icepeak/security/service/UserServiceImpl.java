@@ -1,6 +1,7 @@
 package aspopov.icepeak.security.service;
 
 import aspopov.icepeak.security.domain.User;
+import aspopov.icepeak.security.repository.AbstractUserRepository;
 import aspopov.icepeak.security.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

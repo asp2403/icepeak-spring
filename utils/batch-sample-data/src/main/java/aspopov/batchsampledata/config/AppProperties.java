@@ -14,6 +14,7 @@ public class AppProperties {
     private String bootsFile;
     private String usersFile;
 
+
     public String getUsersFile() {
         return usersFile;
     }

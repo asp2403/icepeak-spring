@@ -22,6 +22,12 @@ public class ErrorResponse {
         this.id = id;
     }
 
+    public ErrorResponse(int errorCode, Long id, RuntimeException ex) {
+        this.errorCode = errorCode;
+        this.errorMessage = ex.getMessage();
+        this.id = id;
+    }
+
     public ErrorResponse() {
     }
 

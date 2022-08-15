@@ -14,13 +14,14 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity(debug = false)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private static final RequestMatcher PROTECTED_URLS = new OrRequestMatcher(
             new AntPathRequestMatcher("/api/auth/logout/**", "POST", false),
-            new AntPathRequestMatcher("/api/shop/**"),
-            new AntPathRequestMatcher("/api/orders/**", "GET", false)
+            new AntPathRequestMatcher("/api/user-account/**"),
+            new AntPathRequestMatcher("/api/management/**")
+
 //            new AntPathRequestMatcher("/api/books/**", "POST", false),
 //            new AntPathRequestMatcher("/api/books/**", "DELETE", false),
 //            new AntPathRequestMatcher("/auth/logout/**", "POST", false),
@@ -75,7 +76,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .authenticated()
                 .and()
                     .authorizeRequests()
-                    .antMatchers(HttpMethod.GET,"/api/orders/**")
+                    .antMatchers("/api/management/**")
+                    .hasAnyRole("MANAGER", "ADMIN")
+                .and()
+                    .authorizeRequests()
+                    .antMatchers("/api/user-account/**")
                     .authenticated()
                 .and()
                     .authorizeRequests()

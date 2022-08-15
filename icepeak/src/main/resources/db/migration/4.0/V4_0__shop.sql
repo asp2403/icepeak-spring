@@ -7,7 +7,7 @@ create table "order" (
     state int not null,
     ready_date timestamp,
     sale_date timestamp,
-    constraint fk_order_customer foreign key (id_customer) references customer(id_user) on delete cascade,
+    constraint fk_order_customer foreign key (id_customer) references "user"(id_user) on delete cascade,
     constraint fk_order_manager foreign key (id_manager) references "user"(id_user) on delete cascade
 );
 
@@ -16,7 +16,7 @@ create index ix_order_manager on "order"(id_manager);
 create index ix_order_state on "order"(state);
 
 create table order_item (
-    id_product_order bigserial not null primary key,
+    id_order_item bigserial not null primary key,
     id_product bigint not null,
     id_order bigint not null,
     sale_price int not null,

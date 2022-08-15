@@ -1,16 +1,15 @@
 package aspopov.icepeak.shop.service;
 
 import aspopov.icepeak.security.domain.Customer;
+import aspopov.icepeak.security.domain.Manager;
 import aspopov.icepeak.security.repository.CustomerRepository;
+import aspopov.icepeak.security.repository.ManagerRepository;
 import aspopov.icepeak.shop.domain.Order;
 import aspopov.icepeak.shop.domain.OrderItem;
 import aspopov.icepeak.shop.domain.OrderState;
 import aspopov.icepeak.shop.dto.OrderDto;
 import aspopov.icepeak.shop.dto.OrderItemDto;
-import aspopov.icepeak.shop.exception.CustomerNotFoundException;
-import aspopov.icepeak.shop.exception.OrderIsEmptyException;
-import aspopov.icepeak.shop.exception.ProductNotAvailableException;
-import aspopov.icepeak.shop.exception.ProductNotFoundException;
+import aspopov.icepeak.shop.exception.*;
 import aspopov.icepeak.shop.repository.OrderRepository;
 import aspopov.icepeak.warehouse.domain.Model;
 import aspopov.icepeak.warehouse.domain.Product;
@@ -50,6 +49,9 @@ class OrderServiceImplTest {
 
     @Autowired
     private OrderService orderService;
+
+    @MockBean
+    private ManagerRepository managerRepository;
 
     @Test
     @DisplayName("должен корректно создавать заказ")
@@ -154,5 +156,45 @@ class OrderServiceImplTest {
         given(customerRepository.findById(eq(1L))).willReturn(Optional.empty());
 
         assertThatExceptionOfType(CustomerNotFoundException.class).isThrownBy(() -> orderService.createOrder(orderDto));
+    }
+
+    @Test
+    @DisplayName("должен корректно присваивать менеджера")
+    void shouldCorrectAssignManager() {
+        var manager = new Manager();
+        manager.setId(1L);
+        var order = new Order();
+        order.setId(2L);
+        given(orderRepository.findById(any())).willReturn(Optional.of(order));
+        given(managerRepository.findById(any())).willReturn(Optional.of(manager));
+        when(orderRepository.save(any())).then(AdditionalAnswers.returnsFirstArg());
+        var actualOrder = orderService.assignManager(2L, 1L);
+        assertThat(actualOrder.getManager()).isNotNull();
+        assertThat(actualOrder.getManager().getId()).isEqualTo(1l);
+
+    }
+
+    @Test
+    @DisplayName("должен выбрасывать ManagerNotFound при присвоении некорректного id")
+    void shouldThrowManagerNotFoundExceptionWhenAssignBadId() {
+        var manager = new Manager();
+        manager.setId(1L);
+        given(orderRepository.findById(any())).willReturn(Optional.empty());
+        given(managerRepository.findById(any())).willReturn(Optional.of(manager));
+
+        assertThatExceptionOfType(OrderNotFoundException.class).isThrownBy(() -> orderService.assignManager(2L, 1L));
+
+    }
+
+    @Test
+    @DisplayName("должен выбрасывать OrderNotFound при присвоении некорректного id заказа")
+    void shouldThrowOrderNotFoundExceptionWhenAssignManagerToBadIdOrder() {
+        var order = new Order();
+        order.setId(2L);
+        given(orderRepository.findById(any())).willReturn(Optional.of(order));
+        given(managerRepository.findById(any())).willReturn(Optional.empty());
+
+        assertThatExceptionOfType(ManagerNotFoundException.class).isThrownBy(() -> orderService.assignManager(2L, 1L));
+
     }
 }

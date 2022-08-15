@@ -21,39 +21,10 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @ExceptionHandler(ProductNotAvailableException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleProductNotAvailableException(ProductNotAvailableException exception) {
-        return new ErrorResponse(ErrorCode.PRODUCT_NOT_AVAILABLE, "Product not available", exception.getIdProduct());
-    }
-
-    @ExceptionHandler(ProductNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleProductNotFoundException(ProductNotFoundException exception) {
-        return new ErrorResponse(ErrorCode.PRODUCT_NOT_FOUND, "Product not found", exception.getIdProduct());
-    }
-
-    @ExceptionHandler(OrderIsEmptyException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleOrderIsEmptyException(OrderIsEmptyException exception) {
-        return new ErrorResponse(ErrorCode.ORDER_IS_EMPTY, "Order is empty");
-    }
-
-    @ExceptionHandler(CustomerNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleCustomerNotFoundException(CustomerNotFoundException exception) {
-        return new ErrorResponse(ErrorCode.CUSTOMER_NOT_FOUND, "Customer not found", exception.getIdCustomer());
-    }
-
     @PostMapping("/api/orders")
     OrderDto createOrder(@RequestBody OrderDto orderDto) {
          var createdOrder = orderService.createOrder(orderDto);
          return OrderDto.fromDomain(createdOrder);
     }
 
-    @GetMapping("/api/orders/{id}")
-    OrderDto getOrder(@PathVariable long id) {
-        var order = orderService.getOrder(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        return OrderDto.fromDomain(order);
-    }
 }

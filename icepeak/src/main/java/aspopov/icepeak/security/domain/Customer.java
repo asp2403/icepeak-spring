@@ -1,18 +1,14 @@
 package aspopov.icepeak.security.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 
 @Entity
-@Table(name = "customer")
-@PrimaryKeyJoinColumn(name = "id_user")
+@DiscriminatorValue("2")
 public class Customer extends User{
 
     @Column(name = "discount")
-    private int discount;
+    private Integer discount;
 
     public int getDiscount() {
         return discount;

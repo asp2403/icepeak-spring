@@ -23,25 +23,46 @@ public class OrderDto {
     @Nullable
     private Long idOrder;
 
+    @Nullable
+    private Long idManager;
+
     private List<OrderItemDto> items;
 
     public static OrderDto fromDomain(Order order) {
         var orderItemDtos = order.getOrderItems().stream().map(OrderItemDto::fromDomain).collect(Collectors.toList());
-        var orderDto = new OrderDto(order.getContactName(), order.getContactSurname(), order.getContactEmail(), order.getContactPhone(), order.getId(), order.getCustomer() == null ? null : order.getCustomer().getId(), orderItemDtos);
+        var orderDto = new OrderDto(
+                order.getContactName(),
+                order.getContactSurname(),
+                order.getContactEmail(),
+                order.getContactPhone(),
+                order.getId(),
+                order.getCustomer() == null ? null : order.getCustomer().getId(),
+                order.getManager() == null ? null : order.getManager().getId(),
+                orderItemDtos);
         return orderDto;
     }
 
-    public OrderDto(String contactName, @Nullable String contactSurname, String contactEmail, String contactPhone, @Nullable Long idOrder, @Nullable Long idCustomer, List<OrderItemDto> items) {
+    public OrderDto(String contactName, @Nullable String contactSurname, String contactEmail, String contactPhone, @Nullable Long idOrder, @Nullable Long idCustomer, @Nullable Long idManager, List<OrderItemDto> items) {
         this.contactName = contactName;
         this.contactSurname = contactSurname;
         this.contactEmail = contactEmail;
         this.contactPhone = contactPhone;
         this.idCustomer = idCustomer;
+        this.idManager = idManager;
         this.idOrder = idOrder;
         this.items = items;
     }
 
     public OrderDto() {
+    }
+
+    @Nullable
+    public Long getIdManager() {
+        return idManager;
+    }
+
+    public void setIdManager(@Nullable Long idManager) {
+        this.idManager = idManager;
     }
 
     public String getContactName() {
