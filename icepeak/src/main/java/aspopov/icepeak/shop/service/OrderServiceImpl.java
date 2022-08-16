@@ -79,9 +79,6 @@ public class OrderServiceImpl implements OrderService {
         newOrder.setOrderItems(orderItems);
         newOrder = orderRepository.save(newOrder);
 
-
-        //orderItemRepository.saveAll(newOrder.getOrderItems());
-
         return newOrder;
     }
 
@@ -97,6 +94,8 @@ public class OrderServiceImpl implements OrderService {
         var order = orderRepository.findById(idOrder).orElseThrow(() -> new OrderNotFoundException(idOrder));
         var manager = managerRepository.findById(idManager).orElseThrow(() -> new ManagerNotFoundException(idManager));
         order.setManager(manager);
+        order.setState(OrderState.PROCESSING);
+        order.setAssignDate(new Timestamp(System.currentTimeMillis()));
         return orderRepository.save(order);
     }
 }

@@ -42,6 +42,9 @@ public class Order {
     @Column(name = "state", nullable = false)
     private int state;
 
+    @Column(name = "assign_date")
+    private Timestamp assignDate;
+
     @Column(name = "ready_date")
     private Timestamp readyDate;
 
@@ -146,5 +149,13 @@ public class Order {
 
     public void setSaleDate(Timestamp saleDate) {
         this.saleDate = saleDate;
+    }
+
+    public Timestamp getAssignDate() {
+        return assignDate;
+    }
+
+    public void setAssignDate(Timestamp assignDate) {
+        this.assignDate = assignDate;
     }
 }

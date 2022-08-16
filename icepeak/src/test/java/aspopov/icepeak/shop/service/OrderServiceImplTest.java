@@ -93,6 +93,8 @@ class OrderServiceImplTest {
         assertThat(product2.getQtyReserved()).isEqualTo(2);
 
         assertThat(actualOrder).isNotNull();
+        assertThat(actualOrder.getState()).isEqualTo(OrderState.NEW);
+        assertThat(actualOrder.getOrderDate()).isNotNull();
         assertThat(actualOrder.getOrderItems().size()).isEqualTo(2);
         assertThat(actualOrder.getOrderItems().get(0).getProduct().getId()).isEqualTo(product1.getId());
         assertThat(actualOrder.getOrderItems().get(0).getSalePrice()).isEqualTo(product1.getModel().getPrice());
@@ -171,7 +173,8 @@ class OrderServiceImplTest {
         var actualOrder = orderService.assignManager(2L, 1L);
         assertThat(actualOrder.getManager()).isNotNull();
         assertThat(actualOrder.getManager().getId()).isEqualTo(1l);
-
+        assertThat(actualOrder.getState()).isEqualTo(OrderState.PROCESSING);
+        assertThat(actualOrder.getAssignDate()).isNotNull();
     }
 
     @Test
