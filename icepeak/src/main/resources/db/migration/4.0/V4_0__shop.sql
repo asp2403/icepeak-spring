@@ -1,12 +1,12 @@
 
 create table "order" (
     id_order bigserial not null primary key,
-    order_date timestamp not null,
+    order_date timestamp with time zone not null,
     id_customer bigint,
     id_manager bigint,
     state int not null,
-    ready_date timestamp,
-    sale_date timestamp,
+    ready_date timestamp with time zone,
+    sale_date timestamp with time zone,
     constraint fk_order_customer foreign key (id_customer) references "user"(id_user) on delete cascade,
     constraint fk_order_manager foreign key (id_manager) references "user"(id_user) on delete cascade
 );

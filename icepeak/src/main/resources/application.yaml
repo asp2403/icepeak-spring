@@ -17,5 +17,6 @@ spring:
 
 
   jackson:
+    time-zone: Europe/Moscow
     serialization:
       FAIL_ON_EMPTY_BEANS: false
