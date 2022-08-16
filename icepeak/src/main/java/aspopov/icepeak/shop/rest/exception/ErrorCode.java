@@ -8,5 +8,5 @@ public final class ErrorCode {
     public static final int ORDER_NOT_FOUND = 5;
     public static final int USER_NOT_FOUND = 6;
     public static final int MANAGER_NOT_FOUND = 7;
-
+    public static final int WRONG_ORDER_STATE = 8;
 }

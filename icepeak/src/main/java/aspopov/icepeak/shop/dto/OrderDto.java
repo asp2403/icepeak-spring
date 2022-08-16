@@ -3,10 +3,17 @@ package aspopov.icepeak.shop.dto;
 import aspopov.icepeak.shop.domain.Order;
 import org.springframework.lang.Nullable;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class OrderDto {
+
+    @Nullable
+    private Long idOrder;
+
+    @Nullable
+    private Integer state;
 
     private String contactName;
 
@@ -21,39 +28,106 @@ public class OrderDto {
     private Long idCustomer;
 
     @Nullable
-    private Long idOrder;
+    private Long idManager;
 
     @Nullable
-    private Long idManager;
+    private Timestamp orderDate;
+
+    @Nullable
+    private Timestamp assignDate;
+
+    @Nullable
+    private Timestamp readyDate;
+
+    @Nullable
+    private Timestamp finalDate;
 
     private List<OrderItemDto> items;
 
     public static OrderDto fromDomain(Order order) {
         var orderItemDtos = order.getOrderItems().stream().map(OrderItemDto::fromDomain).collect(Collectors.toList());
         var orderDto = new OrderDto(
+                order.getId(),
+                order.getState(),
                 order.getContactName(),
                 order.getContactSurname(),
                 order.getContactEmail(),
                 order.getContactPhone(),
-                order.getId(),
                 order.getCustomer() == null ? null : order.getCustomer().getId(),
                 order.getManager() == null ? null : order.getManager().getId(),
+                order.getOrderDate(),
+                order.getAssignDate(),
+                order.getReadyDate(),
+                order.getFinalDate(),
                 orderItemDtos);
         return orderDto;
     }
 
-    public OrderDto(String contactName, @Nullable String contactSurname, String contactEmail, String contactPhone, @Nullable Long idOrder, @Nullable Long idCustomer, @Nullable Long idManager, List<OrderItemDto> items) {
+    public OrderDto(@Nullable Long idOrder, @Nullable Integer state, String contactName, @Nullable String contactSurname,
+                    String contactEmail, String contactPhone, @Nullable Long idCustomer, @Nullable Long idManager,
+                    @Nullable Timestamp orderDate, @Nullable Timestamp assignDate, @Nullable Timestamp readyDate,
+                    @Nullable Timestamp finalDate, List<OrderItemDto> items) {
+        this.idOrder = idOrder;
+        this.state = state;
         this.contactName = contactName;
         this.contactSurname = contactSurname;
         this.contactEmail = contactEmail;
         this.contactPhone = contactPhone;
         this.idCustomer = idCustomer;
         this.idManager = idManager;
-        this.idOrder = idOrder;
+        this.orderDate = orderDate;
+        this.assignDate = assignDate;
+        this.readyDate = readyDate;
+        this.finalDate = finalDate;
         this.items = items;
     }
 
     public OrderDto() {
+    }
+
+    @Nullable
+    public Timestamp getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(@Nullable Timestamp orderDate) {
+        this.orderDate = orderDate;
+    }
+
+    @Nullable
+    public Timestamp getReadyDate() {
+        return readyDate;
+    }
+
+    public void setReadyDate(@Nullable Timestamp readyDate) {
+        this.readyDate = readyDate;
+    }
+
+    @Nullable
+    public Timestamp getFinalDate() {
+        return finalDate;
+    }
+
+    public void setFinalDate(@Nullable Timestamp finalDate) {
+        this.finalDate = finalDate;
+    }
+
+    @Nullable
+    public Timestamp getAssignDate() {
+        return assignDate;
+    }
+
+    public void setAssignDate(@Nullable Timestamp assignDate) {
+        this.assignDate = assignDate;
+    }
+
+    @Nullable
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(@Nullable Integer state) {
+        this.state = state;
     }
 
     @Nullable

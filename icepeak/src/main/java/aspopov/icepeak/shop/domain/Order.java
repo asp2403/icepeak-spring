@@ -48,8 +48,8 @@ public class Order {
     @Column(name = "ready_date")
     private Timestamp readyDate;
 
-    @Column(name = "sale_date")
-    private Timestamp saleDate;
+    @Column(name = "final_date")
+    private Timestamp finalDate;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     List<OrderItem> orderItems;
@@ -143,12 +143,12 @@ public class Order {
         this.readyDate = readyDate;
     }
 
-    public Timestamp getSaleDate() {
-        return saleDate;
+    public Timestamp getFinalDate() {
+        return finalDate;
     }
 
-    public void setSaleDate(Timestamp saleDate) {
-        this.saleDate = saleDate;
+    public void setFinalDate(Timestamp finalDate) {
+        this.finalDate = finalDate;
     }
 
     public Timestamp getAssignDate() {

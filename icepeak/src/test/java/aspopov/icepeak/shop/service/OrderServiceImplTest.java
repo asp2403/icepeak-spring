@@ -17,7 +17,6 @@ import aspopov.icepeak.warehouse.repository.ProductRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.AdditionalAnswers;
-import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -31,7 +30,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
@@ -198,6 +196,23 @@ class OrderServiceImplTest {
         given(managerRepository.findById(any())).willReturn(Optional.empty());
 
         assertThatExceptionOfType(ManagerNotFoundException.class).isThrownBy(() -> orderService.assignManager(2L, 1L));
+
+    }
+
+    @Test
+    @DisplayName("должен корректно изменять статус заказа")
+    void shouldCorrectSetStatus() {
+        var manager = new Manager();
+        var order = new Order();
+        order.setId(1L);
+        order.setState(OrderState.PROCESSING);
+        order.setManager(manager);
+        given(orderRepository.findById(1L)).willReturn(Optional.of(order));
+        when(orderRepository.save(any())).then(AdditionalAnswers.returnsFirstArg());
+        var actualOrder = orderService.changeState(1L, OrderState.READY);
+
+        assertThat(actualOrder.getState()).isEqualTo(OrderState.READY);
+        assertThat(actualOrder.getReadyDate()).isNotNull();
 
     }
 }

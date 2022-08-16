@@ -8,7 +8,7 @@ public final class OrderState {
 
     public static final int READY = 3;
 
-    public static final int COMPLETE = 4;
+    public static final int DELIVERED = 4;
 
     public static final int CANCELLED = 5;
 }

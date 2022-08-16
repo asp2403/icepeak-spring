@@ -51,4 +51,10 @@ public class GlobalExceptionHandler {
     public ErrorResponse handleManagerNotFoundException(ManagerNotFoundException exception) {
         return new ErrorResponse(ErrorCode.MANAGER_NOT_FOUND, exception.getIdManager(), exception);
     }
+
+    @ExceptionHandler(WrongOrderStateException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleWrongOrderStateException(WrongOrderStateException exception) {
+        return new ErrorResponse(ErrorCode.WRONG_ORDER_STATE, (long) exception.getState(), exception);
+    }
 }

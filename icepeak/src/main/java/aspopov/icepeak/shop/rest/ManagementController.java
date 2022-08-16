@@ -1,12 +1,10 @@
 package aspopov.icepeak.shop.rest;
 
 import aspopov.icepeak.shop.dto.OrderDto;
-import aspopov.icepeak.shop.exception.CustomerNotFoundException;
-import aspopov.icepeak.shop.exception.OrderNotFoundException;
-import aspopov.icepeak.shop.exception.UserNotFoundException;
-import aspopov.icepeak.shop.rest.exception.ErrorCode;
-import aspopov.icepeak.shop.rest.exception.ErrorResponse;
+import aspopov.icepeak.shop.dto.OrderSearchParams;
 import aspopov.icepeak.shop.service.OrderService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -25,9 +23,22 @@ public class ManagementController {
         return OrderDto.fromDomain(order);
     }
 
-    @PatchMapping("/api/management/orders/{idOrder}/assign/{idManager}")
+    @PutMapping("/api/management/orders/{idOrder}/assign/{idManager}")
     OrderDto assignManager(@PathVariable long idOrder, @PathVariable long idManager) {
         var order = orderService.assignManager(idOrder, idManager);
+        return OrderDto.fromDomain(order);
+    }
+
+    @GetMapping("/api/management/orders/search")
+    Page<OrderDto> search(OrderSearchParams searchParams, Pageable pageable) {
+        var orders = orderService.search(searchParams, pageable);
+        var ordersDto = orders.map(OrderDto::fromDomain);
+        return ordersDto;
+    }
+
+    @PutMapping("/api/management/orders/{idOrder}/state/{state}")
+    OrderDto setState(@PathVariable long idOrder, @PathVariable int state) {
+        var order = orderService.changeState(idOrder, state);
         return OrderDto.fromDomain(order);
     }
 
