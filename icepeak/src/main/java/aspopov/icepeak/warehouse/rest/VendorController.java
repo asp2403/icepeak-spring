@@ -15,7 +15,7 @@ public class VendorController {
         this.vendorService = vendorService;
     }
 
-    @GetMapping("/api/vendors")
+    @GetMapping("/api/public/vendors")
     public List<Vendor> findAllOrderByName() {
         return vendorService.findAllOrderByName();
     }

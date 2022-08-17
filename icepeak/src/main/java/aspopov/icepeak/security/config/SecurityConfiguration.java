@@ -19,8 +19,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private static final RequestMatcher PROTECTED_URLS = new OrRequestMatcher(
             new AntPathRequestMatcher("/api/auth/logout/**", "POST", false),
-            new AntPathRequestMatcher("/api/user-account/**"),
-            new AntPathRequestMatcher("/api/management/**")
+            new AntPathRequestMatcher("/api/user-area/**"),
+            new AntPathRequestMatcher("/api/work-area/**")
 
 //            new AntPathRequestMatcher("/api/books/**", "POST", false),
 //            new AntPathRequestMatcher("/api/books/**", "DELETE", false),
@@ -44,31 +44,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-
                 .and()
                     .authenticationProvider(provider)
                     .addFilterBefore(authenticationFilter(), AnonymousAuthenticationFilter.class)
-
                 .authorizeRequests()
-//                    .antMatchers(HttpMethod.POST,"/api/comments/**")
-//                    .hasAnyRole("USER", "MODERATOR", "ADMIN")
-//                .and()
-//                    .authorizeRequests()
-//                    .antMatchers(HttpMethod.DELETE, "/api/comments/**")
-//                    .hasAnyRole("MODERATOR", "ADMIN")
-//                .and()
-//                    .authorizeRequests()
-//                    .antMatchers(HttpMethod.POST, "/api/books/**")
-//                    .hasRole("ADMIN")
-//                .and()
-//                    .authorizeRequests()
-//                    .antMatchers(HttpMethod.PUT, "/api/books/**")
-//                    .hasRole("ADMIN")
-//                .and()
-//                    .authorizeRequests()
-//                    .antMatchers(HttpMethod.DELETE, "/api/books/**")
-//                    .hasRole("ADMIN")
-                    .antMatchers(HttpMethod.POST, "/api/orders/**")
+                    .antMatchers("/api/public/**")
                     .permitAll()
                 .and()
                     .authorizeRequests()
@@ -76,19 +56,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .authenticated()
                 .and()
                     .authorizeRequests()
-                    .antMatchers("/api/management/**")
+                    .antMatchers("/api/work-area/**")
                     .hasAnyRole("MANAGER", "ADMIN")
                 .and()
                     .authorizeRequests()
-                    .antMatchers("/api/user-account/**")
+                    .antMatchers("/api/user-area/**")
                     .authenticated()
                 .and()
                     .authorizeRequests()
                     .antMatchers( HttpMethod.POST,"/api/auth/login/**" )
-                    .permitAll()
-                .and()
-                    .authorizeRequests()
-                    .antMatchers( HttpMethod.GET,"/api/**" )
                     .permitAll()
                 .and()
                 .formLogin().disable()
@@ -105,7 +81,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     AuthenticationFilter authenticationFilter() throws Exception {
         var filter = new AuthenticationFilter(PROTECTED_URLS);
-        //var filter = new AuthenticationFilter();
         filter.setAuthenticationManager(authenticationManager());
         return filter;
     }

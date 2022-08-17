@@ -199,20 +199,4 @@ class OrderServiceImplTest {
 
     }
 
-    @Test
-    @DisplayName("должен корректно изменять статус заказа")
-    void shouldCorrectSetStatus() {
-        var manager = new Manager();
-        var order = new Order();
-        order.setId(1L);
-        order.setState(OrderState.PROCESSING);
-        order.setManager(manager);
-        given(orderRepository.findById(1L)).willReturn(Optional.of(order));
-        when(orderRepository.save(any())).then(AdditionalAnswers.returnsFirstArg());
-        var actualOrder = orderService.changeState(1L, OrderState.READY);
-
-        assertThat(actualOrder.getState()).isEqualTo(OrderState.READY);
-        assertThat(actualOrder.getReadyDate()).isNotNull();
-
-    }
 }

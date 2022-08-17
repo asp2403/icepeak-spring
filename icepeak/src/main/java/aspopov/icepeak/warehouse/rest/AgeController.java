@@ -15,7 +15,7 @@ public class AgeController {
         this.ageService = ageService;
     }
 
-    @GetMapping("/api/ages")
+    @GetMapping("/api/public/ages")
     public List<Age> findAll() {
         return ageService.findAll();
     }

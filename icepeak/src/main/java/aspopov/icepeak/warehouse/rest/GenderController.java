@@ -15,7 +15,7 @@ public class GenderController {
         this.genderService = genderService;
     }
 
-    @GetMapping("/api/genders")
+    @GetMapping("/api/public/genders")
     public List<Gender> findAll() {
         return genderService.findAll();
     }
