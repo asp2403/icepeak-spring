@@ -12,5 +12,6 @@ public interface OrderService {
     Order createOrder(OrderDto orderDto);
     Optional<Order> getOrder(long id);
     Order assignManager(long idOrder, long idManager);
+    Order completeProcessing(long idOrder);
     Page<Order> search(OrderSearchParams searchParams, Pageable pageable);
 }

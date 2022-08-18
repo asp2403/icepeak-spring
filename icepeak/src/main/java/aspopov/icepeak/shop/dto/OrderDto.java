@@ -1,5 +1,6 @@
 package aspopov.icepeak.shop.dto;
 
+import aspopov.icepeak.security.dto.ManagerDto;
 import aspopov.icepeak.shop.domain.Order;
 import org.springframework.lang.Nullable;
 
@@ -28,7 +29,7 @@ public class OrderDto {
     private Long idCustomer;
 
     @Nullable
-    private Long idManager;
+    private ManagerDto manager;
 
     @Nullable
     private Timestamp orderDate;
@@ -54,7 +55,7 @@ public class OrderDto {
                 order.getContactEmail(),
                 order.getContactPhone(),
                 order.getCustomer() == null ? null : order.getCustomer().getId(),
-                order.getManager() == null ? null : order.getManager().getId(),
+                order.getManager() == null ? null : ManagerDto.fromDomain(order.getManager()),
                 order.getOrderDate(),
                 order.getAssignDate(),
                 order.getReadyDate(),
@@ -64,7 +65,7 @@ public class OrderDto {
     }
 
     public OrderDto(@Nullable Long idOrder, @Nullable Integer state, String contactName, @Nullable String contactSurname,
-                    String contactEmail, String contactPhone, @Nullable Long idCustomer, @Nullable Long idManager,
+                    String contactEmail, String contactPhone, @Nullable Long idCustomer, @Nullable ManagerDto manager,
                     @Nullable Timestamp orderDate, @Nullable Timestamp assignDate, @Nullable Timestamp readyDate,
                     @Nullable Timestamp finalDate, List<OrderItemDto> items) {
         this.idOrder = idOrder;
@@ -74,7 +75,7 @@ public class OrderDto {
         this.contactEmail = contactEmail;
         this.contactPhone = contactPhone;
         this.idCustomer = idCustomer;
-        this.idManager = idManager;
+        this.manager = manager;
         this.orderDate = orderDate;
         this.assignDate = assignDate;
         this.readyDate = readyDate;
@@ -131,12 +132,12 @@ public class OrderDto {
     }
 
     @Nullable
-    public Long getIdManager() {
-        return idManager;
+    public ManagerDto getManager() {
+        return manager;
     }
 
-    public void setIdManager(@Nullable Long idManager) {
-        this.idManager = idManager;
+    public void setManager(@Nullable ManagerDto manager) {
+        this.manager = manager;
     }
 
     public String getContactName() {

@@ -104,6 +104,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public Order completeProcessing(long idOrder) {
+        var order = orderRepository.findById(idOrder).orElseThrow(() -> new OrderNotFoundException(idOrder));
+        if (order.getState() != OrderState.PROCESSING) {
+            throw new WrongOrderStateException(order.getState());
+        }
+        order.setState(OrderState.READY);
+        order.setReadyDate(new Timestamp(System.currentTimeMillis()));
+        return orderRepository.save(order);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public Page<Order> search(OrderSearchParams searchParams, Pageable pageable) {
         var spec = OrderSpecification.build(searchParams);

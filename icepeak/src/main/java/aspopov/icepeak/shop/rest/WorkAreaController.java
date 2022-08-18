@@ -33,6 +33,12 @@ public class WorkAreaController {
         return OrderDto.fromDomain(order);
     }
 
+    @PutMapping("/api/work-area/orders/{idOrder}/complete-processing")
+    OrderDto orderCompleteProcessing(@PathVariable long idOrder) {
+        var order = orderService.completeProcessing(idOrder);
+        return OrderDto.fromDomain(order);
+    }
+
     @GetMapping("/api/work-area/orders/search")
     Page<OrderDto> search(OrderSearchParams searchParams, Pageable pageable) {
         var orders = orderService.search(searchParams, pageable);

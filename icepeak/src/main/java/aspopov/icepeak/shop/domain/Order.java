@@ -1,7 +1,7 @@
 package aspopov.icepeak.shop.domain;
 
 import aspopov.icepeak.security.domain.Customer;
-import aspopov.icepeak.security.domain.User;
+import aspopov.icepeak.security.domain.Manager;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -37,7 +37,7 @@ public class Order {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_manager")
-    private User manager;
+    private Manager manager;
 
     @Column(name = "state", nullable = false)
     private int state;
@@ -119,11 +119,11 @@ public class Order {
         this.customer = customer;
     }
 
-    public User getManager() {
+    public Manager getManager() {
         return manager;
     }
 
-    public void setManager(User manager) {
+    public void setManager(Manager manager) {
         this.manager = manager;
     }
 
