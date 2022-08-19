@@ -1,7 +1,7 @@
 package aspopov.icepeak.shop.exception;
 
 public class ManagerNotFoundException extends RuntimeException{
-    private long idManager;
+    private Long idManager;
 
     public ManagerNotFoundException(long idManager) {
         super(String.format("Manager not found (%d)", idManager));

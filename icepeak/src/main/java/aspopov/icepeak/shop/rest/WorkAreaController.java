@@ -58,9 +58,9 @@ public class WorkAreaController {
         return ordersDto;
     }
 
-    @GetMapping("/api/work-area/bpm/actions/{state}")
-    BpmData getBpmActions(@PathVariable int state) {
-        return bpmService.getActions(state);
+    @PutMapping("/api/work-area/bpm/get-actions/{idManager}")
+    BpmData getBpmActions(@RequestBody OrderDto orderDto, @PathVariable long idManager) {
+        return bpmService.getActions(orderDto, idManager);
     }
 
 

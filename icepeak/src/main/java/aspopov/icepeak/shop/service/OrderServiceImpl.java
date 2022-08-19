@@ -98,7 +98,9 @@ public class OrderServiceImpl implements OrderService {
         var order = orderRepository.findById(idOrder).orElseThrow(() -> new OrderNotFoundException(idOrder));
         var manager = managerRepository.findById(idManager).orElseThrow(() -> new ManagerNotFoundException(idManager));
         order.setManager(manager);
-        order.setState(OrderState.PROCESSING);
+        if (order.getState() != OrderState.READY) {
+            order.setState(OrderState.PROCESSING);
+        }
         order.setAssignDate(new Timestamp(System.currentTimeMillis()));
         return orderRepository.save(order);
     }

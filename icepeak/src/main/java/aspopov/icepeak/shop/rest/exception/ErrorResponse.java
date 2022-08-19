@@ -28,6 +28,11 @@ public class ErrorResponse {
         this.id = id;
     }
 
+    public ErrorResponse(int errorCode, RuntimeException ex) {
+        this.errorCode = errorCode;
+        this.errorMessage = ex.getMessage();
+    }
+
     public ErrorResponse() {
     }
 

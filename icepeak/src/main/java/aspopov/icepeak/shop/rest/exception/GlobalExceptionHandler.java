@@ -57,4 +57,10 @@ public class GlobalExceptionHandler {
     public ErrorResponse handleWrongOrderStateException(WrongOrderStateException exception) {
         return new ErrorResponse(ErrorCode.WRONG_ORDER_STATE, (long) exception.getState(), exception);
     }
+
+    @ExceptionHandler(ManagerNotAssignedException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleManagerNotAssignedException(ManagerNotAssignedException exception) {
+        return new ErrorResponse(ErrorCode.MANAGER_NOT_ASSIGNED, exception);
+    }
 }
