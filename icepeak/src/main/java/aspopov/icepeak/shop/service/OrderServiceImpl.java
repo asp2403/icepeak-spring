@@ -104,6 +104,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public Order completeProcessing(long idOrder) {
         var order = orderRepository.findById(idOrder).orElseThrow(() -> new OrderNotFoundException(idOrder));
         if (order.getState() != OrderState.PROCESSING) {
@@ -111,6 +112,30 @@ public class OrderServiceImpl implements OrderService {
         }
         order.setState(OrderState.READY);
         order.setReadyDate(new Timestamp(System.currentTimeMillis()));
+        return orderRepository.save(order);
+    }
+
+    @Override
+    @Transactional
+    public Order returnToProcessing(long idOrder) {
+        var order = orderRepository.findById(idOrder).orElseThrow(() -> new OrderNotFoundException(idOrder));
+        if (order.getState() != OrderState.READY) {
+            throw new WrongOrderStateException(order.getState());
+        }
+        order.setState(OrderState.PROCESSING);
+        order.setReadyDate(null);
+        return orderRepository.save(order);
+    }
+
+    @Override
+    @Transactional
+    public Order completeDelivery(long idOrder) {
+        var order = orderRepository.findById(idOrder).orElseThrow(() -> new OrderNotFoundException(idOrder));
+        if (order.getState() != OrderState.READY) {
+            throw new WrongOrderStateException(order.getState());
+        }
+        order.setState(OrderState.DELIVERED);
+        order.setFinalDate(new Timestamp(System.currentTimeMillis()));
         return orderRepository.save(order);
     }
 

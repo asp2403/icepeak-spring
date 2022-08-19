@@ -4,5 +4,5 @@ public enum BpmAction {
     ASSIGN,
     COMPLETE_PROCESSING,
     RETURN_TO_PROCESSING,
-    DELIVER
+    COMPLETE_DELIVERY
 }

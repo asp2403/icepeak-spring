@@ -13,5 +13,7 @@ public interface OrderService {
     Optional<Order> getOrder(long id);
     Order assignManager(long idOrder, long idManager);
     Order completeProcessing(long idOrder);
+    Order returnToProcessing(long idOrder);
+    Order completeDelivery(long idOrder);
     Page<Order> search(OrderSearchParams searchParams, Pageable pageable);
 }
