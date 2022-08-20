@@ -18,4 +18,9 @@ spring:
 
   jackson:
     time-zone: Europe/Moscow
+
+app:
+  cancel-old-orders-interval: 3
+  cancel-task-rate: 180000
+
     

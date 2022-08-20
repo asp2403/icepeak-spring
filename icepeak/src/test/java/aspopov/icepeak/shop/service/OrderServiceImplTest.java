@@ -158,45 +158,6 @@ class OrderServiceImplTest {
         assertThatExceptionOfType(CustomerNotFoundException.class).isThrownBy(() -> orderService.createOrder(orderDto));
     }
 
-    @Test
-    @DisplayName("должен корректно присваивать менеджера")
-    void shouldCorrectAssignManager() {
-        var manager = new Manager();
-        manager.setId(1L);
-        var order = new Order();
-        order.setId(2L);
-        given(orderRepository.findById(any())).willReturn(Optional.of(order));
-        given(managerRepository.findById(any())).willReturn(Optional.of(manager));
-        when(orderRepository.save(any())).then(AdditionalAnswers.returnsFirstArg());
-        var actualOrder = orderService.assignManager(2L, 1L);
-        assertThat(actualOrder.getManager()).isNotNull();
-        assertThat(actualOrder.getManager().getId()).isEqualTo(1l);
-        assertThat(actualOrder.getState()).isEqualTo(OrderState.PROCESSING);
-        assertThat(actualOrder.getAssignDate()).isNotNull();
-    }
 
-    @Test
-    @DisplayName("должен выбрасывать ManagerNotFound при присвоении некорректного id")
-    void shouldThrowManagerNotFoundExceptionWhenAssignBadId() {
-        var manager = new Manager();
-        manager.setId(1L);
-        given(orderRepository.findById(any())).willReturn(Optional.empty());
-        given(managerRepository.findById(any())).willReturn(Optional.of(manager));
-
-        assertThatExceptionOfType(OrderNotFoundException.class).isThrownBy(() -> orderService.assignManager(2L, 1L));
-
-    }
-
-    @Test
-    @DisplayName("должен выбрасывать OrderNotFound при присвоении некорректного id заказа")
-    void shouldThrowOrderNotFoundExceptionWhenAssignManagerToBadIdOrder() {
-        var order = new Order();
-        order.setId(2L);
-        given(orderRepository.findById(any())).willReturn(Optional.of(order));
-        given(managerRepository.findById(any())).willReturn(Optional.empty());
-
-        assertThatExceptionOfType(ManagerNotFoundException.class).isThrownBy(() -> orderService.assignManager(2L, 1L));
-
-    }
 
 }

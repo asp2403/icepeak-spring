@@ -5,6 +5,8 @@ import aspopov.icepeak.shop.dto.OrderDto;
 import aspopov.icepeak.shop.dto.OrderSearchParams;
 import aspopov.icepeak.shop.service.BpmService;
 import aspopov.icepeak.shop.service.OrderService;
+import aspopov.icepeak.warehouse.dto.*;
+import aspopov.icepeak.warehouse.service.ModelService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -27,27 +29,27 @@ public class WorkAreaController {
         return OrderDto.fromDomain(order);
     }
 
-    @PutMapping("/api/work-area/orders/{idOrder}/assign/{idManager}")
+    @PutMapping("/api/work-area/bpm/order/{idOrder}/assign-manager/{idManager}")
     OrderDto assignManager(@PathVariable long idOrder, @PathVariable long idManager) {
-        var order = orderService.assignManager(idOrder, idManager);
+        var order = bpmService.assignManager(idOrder, idManager);
         return OrderDto.fromDomain(order);
     }
 
-    @PutMapping("/api/work-area/orders/{idOrder}/complete-processing")
+    @PutMapping("/api/work-area/bpm/order/{idOrder}/complete-processing")
     OrderDto orderCompleteProcessing(@PathVariable long idOrder) {
-        var order = orderService.completeProcessing(idOrder);
+        var order = bpmService.completeProcessing(idOrder);
         return OrderDto.fromDomain(order);
     }
 
-    @PutMapping("/api/work-area/orders/{idOrder}/return-to-processing")
+    @PutMapping("/api/work-area/bpm/order/{idOrder}/return-to-processing")
     OrderDto orderReturnToProcessing(@PathVariable long idOrder) {
-        var order = orderService.returnToProcessing(idOrder);
+        var order = bpmService.returnToProcessing(idOrder);
         return OrderDto.fromDomain(order);
     }
 
-    @PutMapping("/api/work-area/orders/{idOrder}/complete-delivery")
+    @PutMapping("/api/work-area/bpm/order/{idOrder}/complete-delivery")
     OrderDto orderCompleteDelivery(@PathVariable long idOrder) {
-        var order = orderService.completeDelivery(idOrder);
+        var order = bpmService.completeDelivery(idOrder);
         return OrderDto.fromDomain(order);
     }
 
@@ -62,7 +64,6 @@ public class WorkAreaController {
     BpmData getBpmActions(@RequestBody OrderDto orderDto, @PathVariable long idManager) {
         return bpmService.getActions(orderDto, idManager);
     }
-
 
 
 }

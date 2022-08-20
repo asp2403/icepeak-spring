@@ -7,7 +7,9 @@ import aspopov.icepeak.shop.domain.OrderItem;
 import aspopov.icepeak.shop.domain.OrderState;
 import aspopov.icepeak.shop.dto.OrderDto;
 import aspopov.icepeak.shop.dto.OrderSearchParams;
-import aspopov.icepeak.shop.exception.*;
+import aspopov.icepeak.shop.exception.CustomerNotFoundException;
+import aspopov.icepeak.shop.exception.OrderIsEmptyException;
+import aspopov.icepeak.shop.exception.ProductNotFoundException;
 import aspopov.icepeak.shop.repository.OrderItemRepository;
 import aspopov.icepeak.shop.repository.OrderRepository;
 import aspopov.icepeak.shop.repository.specification.OrderSpecification;
@@ -27,15 +29,14 @@ public class OrderServiceImpl implements OrderService {
     private final ProductRepository productRepository;
     private final CustomerRepository customerRepository;
     private final OrderRepository orderRepository;
-    private final OrderItemRepository orderItemRepository;
-    private final ManagerRepository managerRepository;
+    private final ProductService productService;
 
-    public OrderServiceImpl(ProductRepository productRepository, CustomerRepository customerRepository, OrderRepository orderRepository, OrderItemRepository orderItemRepository, ManagerRepository managerRepository) {
+
+    public OrderServiceImpl(ProductRepository productRepository, CustomerRepository customerRepository, OrderRepository orderRepository, OrderItemRepository orderItemRepository, ManagerRepository managerRepository, ProductService productService) {
         this.productRepository = productRepository;
         this.customerRepository = customerRepository;
         this.orderRepository = orderRepository;
-        this.orderItemRepository = orderItemRepository;
-        this.managerRepository = managerRepository;
+        this.productService = productService;
     }
 
 
@@ -52,21 +53,18 @@ public class OrderServiceImpl implements OrderService {
 
         orderDto.getItems().forEach(orderItemDto -> {
             var product = productRepository.findById(orderItemDto.getIdProduct()).orElseThrow(() -> new ProductNotFoundException(orderItemDto.getIdProduct()));
-            if (orderItemDto.getQty() <= product.getQtyAvailable()) {
-                var orderItem = new OrderItem();
 
-                product.setQtyAvailable(product.getQtyAvailable() - orderItemDto.getQty());
-                product.setQtyReserved(product.getQtyReserved() + orderItemDto.getQty());
-                productRepository.save(product);
+            var orderItem = new OrderItem();
 
-                orderItem.setProduct(product);
-                orderItem.setQty(orderItemDto.getQty());
-                orderItem.setSalePrice(product.getModel().getPrice());
-                orderItems.add(orderItem);
+            productService.reserve(product, orderItemDto.getQty());
+            productRepository.save(product);
 
-            } else {
-                throw new ProductNotAvailableException(orderItemDto.getIdProduct());
-            }
+            orderItem.setProduct(product);
+            orderItem.setQty(orderItemDto.getQty());
+            orderItem.setSalePrice(product.getModel().getPrice());
+            orderItems.add(orderItem);
+
+
         });
 
         if (orderDto.getIdCustomer() != null) {
@@ -92,59 +90,20 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findById(id);
     }
 
-    @Override
-    @Transactional
-    public Order assignManager(long idOrder, long idManager) {
-        var order = orderRepository.findById(idOrder).orElseThrow(() -> new OrderNotFoundException(idOrder));
-        var manager = managerRepository.findById(idManager).orElseThrow(() -> new ManagerNotFoundException(idManager));
-        order.setManager(manager);
-        if (order.getState() != OrderState.READY) {
-            order.setState(OrderState.PROCESSING);
-        }
-        order.setAssignDate(new Timestamp(System.currentTimeMillis()));
-        return orderRepository.save(order);
-    }
-
-    @Override
-    @Transactional
-    public Order completeProcessing(long idOrder) {
-        var order = orderRepository.findById(idOrder).orElseThrow(() -> new OrderNotFoundException(idOrder));
-        if (order.getState() != OrderState.PROCESSING) {
-            throw new WrongOrderStateException(order.getState());
-        }
-        order.setState(OrderState.READY);
-        order.setReadyDate(new Timestamp(System.currentTimeMillis()));
-        return orderRepository.save(order);
-    }
-
-    @Override
-    @Transactional
-    public Order returnToProcessing(long idOrder) {
-        var order = orderRepository.findById(idOrder).orElseThrow(() -> new OrderNotFoundException(idOrder));
-        if (order.getState() != OrderState.READY) {
-            throw new WrongOrderStateException(order.getState());
-        }
-        order.setState(OrderState.PROCESSING);
-        order.setReadyDate(null);
-        return orderRepository.save(order);
-    }
-
-    @Override
-    @Transactional
-    public Order completeDelivery(long idOrder) {
-        var order = orderRepository.findById(idOrder).orElseThrow(() -> new OrderNotFoundException(idOrder));
-        if (order.getState() != OrderState.READY) {
-            throw new WrongOrderStateException(order.getState());
-        }
-        order.setState(OrderState.DELIVERED);
-        order.setFinalDate(new Timestamp(System.currentTimeMillis()));
-        return orderRepository.save(order);
-    }
 
     @Override
     @Transactional(readOnly = true)
     public Page<Order> search(OrderSearchParams searchParams, Pageable pageable) {
         var spec = OrderSpecification.build(searchParams);
         return orderRepository.findAll(spec, pageable);
+    }
+
+    @Override
+    @Transactional
+    public Order cancelOrder(Order order) {
+        order.getOrderItems().forEach(orderItem -> productService.cancelOrder(orderItem.getProduct(), orderItem.getQty()));
+        order.setState(OrderState.CANCELLED);
+        order.setFinalDate(new Timestamp(System.currentTimeMillis()));
+        return orderRepository.save(order);
     }
 }
