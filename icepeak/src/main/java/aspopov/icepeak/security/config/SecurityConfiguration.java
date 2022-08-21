@@ -22,11 +22,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             new AntPathRequestMatcher("/api/user-area/**"),
             new AntPathRequestMatcher("/api/work-area/**")
 
-//            new AntPathRequestMatcher("/api/books/**", "POST", false),
-//            new AntPathRequestMatcher("/api/books/**", "DELETE", false),
-//            new AntPathRequestMatcher("/auth/logout/**", "POST", false),
-//            new AntPathRequestMatcher("/api/comments/**", "POST", false),
-//            new AntPathRequestMatcher("/api/comments/**", "DELETE", false)
     );
 
 
