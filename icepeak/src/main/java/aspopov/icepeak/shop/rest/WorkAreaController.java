@@ -2,7 +2,9 @@ package aspopov.icepeak.shop.rest;
 
 import aspopov.icepeak.shop.domain.BpmData;
 import aspopov.icepeak.shop.dto.OrderDto;
+import aspopov.icepeak.shop.dto.OrderFullDto;
 import aspopov.icepeak.shop.dto.OrderSearchParams;
+import aspopov.icepeak.shop.dto.OrderTitleDto;
 import aspopov.icepeak.shop.service.BpmService;
 import aspopov.icepeak.shop.service.OrderService;
 import aspopov.icepeak.warehouse.dto.*;
@@ -23,45 +25,45 @@ public class WorkAreaController {
         this.bpmService = bpmService;
     }
 
-    @GetMapping("/api/work-area/orders/{id}")
-    OrderDto getOrder(@PathVariable long id) {
-        var order = orderService.getOrder(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        return OrderDto.fromDomain(order);
-    }
-
-    @PutMapping("/api/work-area/bpm/order/{idOrder}/assign-manager/{idManager}")
-    OrderDto assignManager(@PathVariable long idOrder, @PathVariable long idManager) {
-        var order = bpmService.assignManager(idOrder, idManager);
-        return OrderDto.fromDomain(order);
-    }
-
-    @PutMapping("/api/work-area/bpm/order/{idOrder}/complete-processing")
-    OrderDto orderCompleteProcessing(@PathVariable long idOrder) {
-        var order = bpmService.completeProcessing(idOrder);
-        return OrderDto.fromDomain(order);
-    }
-
-    @PutMapping("/api/work-area/bpm/order/{idOrder}/return-to-processing")
-    OrderDto orderReturnToProcessing(@PathVariable long idOrder) {
-        var order = bpmService.returnToProcessing(idOrder);
-        return OrderDto.fromDomain(order);
-    }
-
-    @PutMapping("/api/work-area/bpm/order/{idOrder}/complete-delivery")
-    OrderDto orderCompleteDelivery(@PathVariable long idOrder) {
-        var order = bpmService.completeDelivery(idOrder);
-        return OrderDto.fromDomain(order);
-    }
-
     @GetMapping("/api/work-area/orders/search")
-    Page<OrderDto> search(OrderSearchParams searchParams, Pageable pageable) {
+    Page<OrderTitleDto> search(OrderSearchParams searchParams, Pageable pageable) {
         var orders = orderService.search(searchParams, pageable);
-        var ordersDto = orders.map(OrderDto::fromDomain);
+        var ordersDto = orders.map(OrderTitleDto::fromDomain);
         return ordersDto;
     }
 
+    @GetMapping("/api/work-area/orders/{id}")
+    OrderFullDto getOrder(@PathVariable long id) {
+        var order = orderService.getOrder(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return OrderFullDto.fromDomain(order);
+    }
+
+    @PutMapping("/api/work-area/bpm/order/{idOrder}/assign-manager/{idManager}")
+    OrderTitleDto assignManager(@PathVariable long idOrder, @PathVariable long idManager) {
+        var order = bpmService.assignManager(idOrder, idManager);
+        return OrderTitleDto.fromDomain(order);
+    }
+
+    @PutMapping("/api/work-area/bpm/order/{idOrder}/complete-processing")
+    OrderTitleDto orderCompleteProcessing(@PathVariable long idOrder) {
+        var order = bpmService.completeProcessing(idOrder);
+        return OrderTitleDto.fromDomain(order);
+    }
+
+    @PutMapping("/api/work-area/bpm/order/{idOrder}/return-to-processing")
+    OrderTitleDto orderReturnToProcessing(@PathVariable long idOrder) {
+        var order = bpmService.returnToProcessing(idOrder);
+        return OrderTitleDto.fromDomain(order);
+    }
+
+    @PutMapping("/api/work-area/bpm/order/{idOrder}/complete-delivery")
+    OrderTitleDto orderCompleteDelivery(@PathVariable long idOrder) {
+        var order = bpmService.completeDelivery(idOrder);
+        return OrderTitleDto.fromDomain(order);
+    }
+
     @PutMapping("/api/work-area/bpm/get-actions/{idManager}")
-    BpmData getBpmActions(@RequestBody OrderDto orderDto, @PathVariable long idManager) {
+    BpmData getBpmActions(@RequestBody OrderTitleDto orderDto, @PathVariable long idManager) {
         return bpmService.getActions(orderDto, idManager);
     }
 

@@ -6,6 +6,7 @@ import aspopov.icepeak.shop.domain.BpmData;
 import aspopov.icepeak.shop.domain.Order;
 import aspopov.icepeak.shop.domain.OrderState;
 import aspopov.icepeak.shop.dto.OrderDto;
+import aspopov.icepeak.shop.dto.OrderTitleDto;
 import aspopov.icepeak.shop.exception.ManagerNotAssignedException;
 import aspopov.icepeak.shop.exception.ManagerNotFoundException;
 import aspopov.icepeak.shop.exception.OrderNotFoundException;
@@ -30,7 +31,7 @@ public class BpmServiceImpl implements BpmService {
     }
 
     @Override
-    public BpmData getActions(OrderDto orderDto, long idManager) {
+    public BpmData getActions(OrderTitleDto orderDto, long idManager) {
         switch (orderDto.getState()) {
             case OrderState.NEW:
                 return new BpmData(null, BpmAction.ASSIGN);

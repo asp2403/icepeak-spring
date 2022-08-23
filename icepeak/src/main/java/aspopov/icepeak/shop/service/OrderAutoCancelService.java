@@ -28,7 +28,7 @@ public class OrderAutoCancelService {
     @Transactional
     @Scheduled(initialDelay = 1000, fixedRateString= "${app.cancel-task-rate}")
     public void cancelOldOrders() {
-        log.info("Удаление просроченных заказов");
+        log.info("Отмена просроченных заказов");
         var oldOrders = orderRepository.findOldOrders(appProperties.getCancelOldOrdersInterval());
         oldOrders.forEach(order -> orderService.cancelOrder(order));
     }
