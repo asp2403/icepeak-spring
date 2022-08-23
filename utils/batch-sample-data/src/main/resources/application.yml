@@ -9,7 +9,7 @@ app:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:8081/icepeak
+    url: jdbc:postgresql://localhost:5432/icepeak
     username: postgres
     password: postgres
 
