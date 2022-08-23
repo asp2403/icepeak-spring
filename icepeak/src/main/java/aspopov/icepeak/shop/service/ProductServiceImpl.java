@@ -21,7 +21,7 @@ public class ProductServiceImpl implements ProductService {
     public Product completeDelivery(Product product, int qty) {
         if (qty <= product.getQtyReserved()) {
             product.setQtyReserved(product.getQtyReserved() - qty);
-            product.setQtyAvailable(product.getQtyAvailable() + qty);
+            
         } else {
             throw new ProductNotAvailableException(product.getId());
         }
