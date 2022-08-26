@@ -1,7 +1,7 @@
 package aspopov.icepeak.shop.service;
 
-import aspopov.icepeak.security.repository.CustomerRepository;
-import aspopov.icepeak.security.repository.ManagerRepository;
+import aspopov.icepeak.shop.repository.CustomerRepository;
+import aspopov.icepeak.shop.repository.ManagerRepository;
 import aspopov.icepeak.shop.domain.Order;
 import aspopov.icepeak.shop.domain.OrderItem;
 import aspopov.icepeak.shop.domain.OrderState;
@@ -32,7 +32,7 @@ public class OrderServiceImpl implements OrderService {
     private final ProductService productService;
 
 
-    public OrderServiceImpl(ProductRepository productRepository, CustomerRepository customerRepository, OrderRepository orderRepository, OrderItemRepository orderItemRepository, ManagerRepository managerRepository, ProductService productService) {
+    public OrderServiceImpl(ProductRepository productRepository, CustomerRepository customerRepository, OrderRepository orderRepository, ProductService productService) {
         this.productRepository = productRepository;
         this.customerRepository = customerRepository;
         this.orderRepository = orderRepository;

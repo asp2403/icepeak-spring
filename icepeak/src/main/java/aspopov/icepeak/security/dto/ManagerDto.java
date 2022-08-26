@@ -1,6 +1,6 @@
 package aspopov.icepeak.security.dto;
 
-import aspopov.icepeak.security.domain.Manager;
+import aspopov.icepeak.shop.domain.Manager;
 
 public class ManagerDto {
     private long id;

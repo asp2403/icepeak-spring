@@ -1,9 +1,8 @@
 package aspopov.icepeak.shop.service;
 
-import aspopov.icepeak.security.domain.Customer;
-import aspopov.icepeak.security.domain.Manager;
-import aspopov.icepeak.security.repository.CustomerRepository;
-import aspopov.icepeak.security.repository.ManagerRepository;
+import aspopov.icepeak.shop.domain.Customer;
+import aspopov.icepeak.shop.repository.CustomerRepository;
+import aspopov.icepeak.shop.repository.ManagerRepository;
 import aspopov.icepeak.shop.domain.Order;
 import aspopov.icepeak.shop.domain.OrderItem;
 import aspopov.icepeak.shop.domain.OrderState;

@@ -1,7 +1,7 @@
 package aspopov.icepeak.shop.service;
 
-import aspopov.icepeak.security.domain.Manager;
-import aspopov.icepeak.security.repository.ManagerRepository;
+import aspopov.icepeak.shop.domain.Manager;
+import aspopov.icepeak.shop.repository.ManagerRepository;
 import aspopov.icepeak.shop.domain.Order;
 import aspopov.icepeak.shop.domain.OrderState;
 import aspopov.icepeak.shop.exception.ManagerNotFoundException;
@@ -18,7 +18,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;

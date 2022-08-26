@@ -1,11 +1,13 @@
-package aspopov.icepeak.security.domain;
+package aspopov.icepeak.shop.domain;
+
+import aspopov.icepeak.security.domain.User;
 
 import javax.persistence.*;
 
 
 @Entity
 @DiscriminatorValue("2")
-public class Customer extends User{
+public class Customer extends User {
 
     @Column(name = "discount")
     private Integer discount;

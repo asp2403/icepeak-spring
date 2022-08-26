@@ -43,14 +43,11 @@ class WorkAreaControllerTest {
     @Autowired
     private MockMvc mvc;
 
-    @Autowired
-    private AuthenticationProvider authenticationProvider;
+    @MockBean
+    private OrderService orderService;
 
     @MockBean
-    OrderService orderService;
-
-    @MockBean
-    BpmService bpmService;
+    private BpmService bpmService;
 
     @MockBean
     private UserService userService;

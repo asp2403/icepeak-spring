@@ -18,12 +18,11 @@ public class Product {
     @Column(name = "id_product")
     private long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_model", nullable = false)
     private Model model;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private List<OrderItem> orderItems;
+
 
     @Column(name = "qty_available", nullable = false)
     private int qtyAvailable;
