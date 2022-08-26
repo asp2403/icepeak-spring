@@ -1,8 +1,10 @@
 package aspopov.icepeak.warehouse.domain;
 
+import aspopov.icepeak.shop.domain.OrderItem;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -16,9 +18,12 @@ public class Product {
     @Column(name = "id_product")
     private long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_model", nullable = false)
     private Model model;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<OrderItem> orderItems;
 
     @Column(name = "qty_available", nullable = false)
     private int qtyAvailable;

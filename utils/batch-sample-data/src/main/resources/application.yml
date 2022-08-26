@@ -1,14 +1,15 @@
 app:
-  vendors-file: vendors.csv
-  models-file: models.csv
-  images-large: images-large
-  images-small: images-small
-  ski-file: ski.csv
-  boots-file: boots.csv
+  vendors-file: data/vendors.csv
+  models-file: data/models.csv
+  images-large: data/images-large
+  images-small: data/images-small
+  ski-file: data/ski.csv
+  boots-file: data/boots.csv
+  users-file: data/users.csv
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/icepeak
+    url: jdbc:postgresql://localhost:8081/icepeak
     username: postgres
     password: postgres
 

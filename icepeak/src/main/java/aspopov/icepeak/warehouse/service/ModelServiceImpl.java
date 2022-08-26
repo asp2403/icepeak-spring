@@ -5,11 +5,10 @@ import aspopov.icepeak.warehouse.domain.Model;
 import aspopov.icepeak.warehouse.dto.ModelSearchParams;
 import aspopov.icepeak.warehouse.repository.ModelRepository;
 
-import aspopov.icepeak.warehouse.repository.ModelSpecification;
+import aspopov.icepeak.warehouse.repository.specification.ModelSpecification;
 import aspopov.icepeak.warehouse.repository.projection.ModelShortView;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
