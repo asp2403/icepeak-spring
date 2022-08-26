@@ -45,7 +45,7 @@ public class Model {
     @Column(name = "image_large")
     private byte[] imageLarge;
 
-    @OneToMany(mappedBy = "model")
+    @OneToMany(mappedBy = "model", cascade = CascadeType.ALL)
     private List<Product> products;
 
     public Model(long id, short category, String name, Vendor vendor, Gender gender, Age age, int price) {
@@ -156,5 +156,9 @@ public class Model {
 
     public void setImageLarge(byte[] imageLarge) {
         this.imageLarge = imageLarge;
+    }
+
+    public List<Product> getProducts() {
+        return products;
     }
 }

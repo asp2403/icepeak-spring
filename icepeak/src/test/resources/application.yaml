@@ -16,3 +16,7 @@ spring:
     hibernate:
       ddl-auto: none
     show-sql: true
+
+app:
+  cancel-old-orders-interval: 3
+  cancel-task-rate: 180000

@@ -1,11 +1,16 @@
 package aspopov.icepeak.warehouse.domain;
 
+import aspopov.icepeak.shop.domain.OrderItem;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "product")
 @Inheritance(strategy = InheritanceType.JOINED)
+
 public class Product {
 
     @Id
@@ -16,6 +21,8 @@ public class Product {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_model", nullable = false)
     private Model model;
+
+
 
     @Column(name = "qty_available", nullable = false)
     private int qtyAvailable;
