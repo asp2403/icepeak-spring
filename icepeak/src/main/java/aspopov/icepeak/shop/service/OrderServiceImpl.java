@@ -17,6 +17,7 @@ import aspopov.icepeak.warehouse.repository.ProductRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
@@ -41,7 +42,7 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Override
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Order createOrder(OrderDto orderDto) {
 
         if (orderDto.getItems() == null || orderDto.getItems().size() == 0) {
@@ -99,7 +100,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Order cancelOrder(Order order) {
         order.getOrderItems().forEach(orderItem -> productService.cancelOrder(orderItem.getProduct(), orderItem.getQty()));
         order.setState(OrderState.CANCELLED);
