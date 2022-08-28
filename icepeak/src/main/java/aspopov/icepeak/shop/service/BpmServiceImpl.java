@@ -1,11 +1,10 @@
 package aspopov.icepeak.shop.service;
 
-import aspopov.icepeak.security.repository.ManagerRepository;
+import aspopov.icepeak.shop.repository.ManagerRepository;
 import aspopov.icepeak.shop.domain.BpmAction;
 import aspopov.icepeak.shop.domain.BpmData;
 import aspopov.icepeak.shop.domain.Order;
 import aspopov.icepeak.shop.domain.OrderState;
-import aspopov.icepeak.shop.dto.OrderDto;
 import aspopov.icepeak.shop.dto.OrderTitleDto;
 import aspopov.icepeak.shop.exception.ManagerNotAssignedException;
 import aspopov.icepeak.shop.exception.ManagerNotFoundException;

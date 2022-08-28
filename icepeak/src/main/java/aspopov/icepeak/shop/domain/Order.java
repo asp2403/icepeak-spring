@@ -1,8 +1,5 @@
 package aspopov.icepeak.shop.domain;
 
-import aspopov.icepeak.security.domain.Customer;
-import aspopov.icepeak.security.domain.Manager;
-
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
