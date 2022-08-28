@@ -1,5 +1,5 @@
-#ICEPEAK: Товары для активного отдыха
+# ICEPEAK: Товары для активного отдыха
 
-*Интернет-магазин на Spring Boot*
+*Интернет-магазин на Spring Boot + Angular*
 
-Web-API для проекта ICEPEAK
+REST-API для проекта ICEPEAK

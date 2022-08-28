@@ -2,9 +2,11 @@
 
 *Интернет-магазин на Spring Boot + Angular*
 
+Демонстрационный проект
+
 ## Технологии
 
-Web-API (/icepeak): Spring MVC
+REST-API (/icepeak): Spring MVC
 
 Безопасность: Spring Security (аутентификация по токену, авторизация по url)
 
